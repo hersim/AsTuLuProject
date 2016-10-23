@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="913ca0c9982b481f8c3746bfac5ecd99" Name="Diagram1" ZoomLevel="82">
+        <EntityTypeShape EntityType="AsTuLusModel.Author" Width="2" PointX="7.25" PointY="1.125" />
+        <EntityTypeShape EntityType="AsTuLusModel.AuthorByBook" Width="2.125" PointX="11.625" PointY="2" />
+        <EntityTypeShape EntityType="AsTuLusModel.Book" Width="2.625" PointX="12.5" PointY="4.875" />
+        <EntityTypeShape EntityType="AsTuLusModel.BookByEditor" Width="1.5" PointX="18.5" PointY="5.875" />
+        <EntityTypeShape EntityType="AsTuLusModel.BookByUser" Width="1.5" PointX="17.75" PointY="8.375" />
+        <EntityTypeShape EntityType="AsTuLusModel.Category" Width="2.125" PointX="8.125" PointY="6" />
+        <EntityTypeShape EntityType="AsTuLusModel.Comment" Width="1.5" PointX="16.875" PointY="12.5" />
+        <EntityTypeShape EntityType="AsTuLusModel.Editor" Width="1.5" PointX="22.375" PointY="5.875" />
+        <EntityTypeShape EntityType="AsTuLusModel.Review" Width="1.5" PointX="13.75" PointY="13.875" />
+        <EntityTypeShape EntityType="AsTuLusModel.SubCategory" Width="1.5" PointX="3.5" PointY="7" />
+        <EntityTypeShape EntityType="AsTuLusModel.UserAccount" Width="1.5" PointX="19.625" PointY="12" />
+        <EntityTypeShape EntityType="AsTuLusModel.UserProfile" Width="1.5" PointX="2.25" PointY="18.375" />
+        <EntityTypeShape EntityType="AsTuLusModel.webpages_Membership" Width="1.5" PointX="4.75" PointY="19.875" />
+        <EntityTypeShape EntityType="AsTuLusModel.webpages_OAuthMembership" Width="1.5" PointX="7.75" PointY="21.375" />
+        <EntityTypeShape EntityType="AsTuLusModel.webpages_Roles" Width="1.5" PointX="10.75" PointY="22.875" />
+        <AssociationConnector Association="AsTuLusModel.FKAuthorBook" />
+        <AssociationConnector Association="AsTuLusModel.FKBookAuthor" />
+        <AssociationConnector Association="AsTuLusModel.FKBookToEditor" />
+        <AssociationConnector Association="AsTuLusModel.FKBookToUser" />
+        <AssociationConnector Association="AsTuLusModel.FKCategoryBook" />
+        <AssociationConnector Association="AsTuLusModel.FKReviewBook" />
+        <AssociationConnector Association="AsTuLusModel.FKEditorToBook" />
+        <AssociationConnector Association="AsTuLusModel.FKUserToBook" />
+        <AssociationConnector Association="AsTuLusModel.FKSubCategoryCategory" />
+        <AssociationConnector Association="AsTuLusModel.FKCommentReview" />
+        <AssociationConnector Association="AsTuLusModel.FKCommentUser" />
+        <AssociationConnector Association="AsTuLusModel.FKReviewUser" />
+        <AssociationConnector Association="AsTuLusModel.webpages_UsersInRoles" />
+        <EntityTypeShape EntityType="AsTuLusModel.UserFavorites" Width="1.5" PointX="22.625" PointY="13.25" />
+        <AssociationConnector Association="AsTuLusModel.FKFavUser" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

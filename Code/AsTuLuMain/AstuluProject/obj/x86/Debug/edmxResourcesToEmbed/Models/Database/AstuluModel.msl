@@ -1,0 +1,76 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="AstulusModelStoreContainer" CdmEntityContainer="AstulusEntities">
+    <EntitySetMapping Name="Books">
+      <EntityTypeMapping TypeName="AstulusModel.Book">
+        <MappingFragment StoreEntitySet="Book">
+          <ScalarProperty Name="EditorID" ColumnName="EditorID" />
+          <ScalarProperty Name="CategoryID" ColumnName="CategoryID" />
+          <ScalarProperty Name="Score" ColumnName="Score" />
+          <ScalarProperty Name="PublishedDate" ColumnName="PublishedDate" />
+          <ScalarProperty Name="PageNumber" ColumnName="PageNumber" />
+          <ScalarProperty Name="BookLanguage" ColumnName="BookLanguage" />
+          <ScalarProperty Name="BookType" ColumnName="BookType" />
+          <ScalarProperty Name="BookNumber" ColumnName="BookNumber" />
+          <ScalarProperty Name="BookISBN" ColumnName="BookISBN" />
+          <ScalarProperty Name="ThirdAuthor" ColumnName="ThirdAuthor" />
+          <ScalarProperty Name="SecondAuthor" ColumnName="SecondAuthor" />
+          <ScalarProperty Name="PrimaryAuthor" ColumnName="PrimaryAuthor" />
+          <ScalarProperty Name="BookName" ColumnName="BookName" />
+          <ScalarProperty Name="BookID" ColumnName="BookID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Categories">
+      <EntityTypeMapping TypeName="AstulusModel.Category">
+        <MappingFragment StoreEntitySet="Category">
+          <ScalarProperty Name="CategoryName" ColumnName="CategoryName" />
+          <ScalarProperty Name="CategoryID" ColumnName="CategoryID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Comments">
+      <EntityTypeMapping TypeName="AstulusModel.Comment">
+        <MappingFragment StoreEntitySet="Comment">
+          <ScalarProperty Name="ReviewID" ColumnName="ReviewID" />
+          <ScalarProperty Name="UserID" ColumnName="UserID" />
+          <ScalarProperty Name="CommentText" ColumnName="CommentText" />
+          <ScalarProperty Name="CommentID" ColumnName="CommentID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Editors">
+      <EntityTypeMapping TypeName="AstulusModel.Editor">
+        <MappingFragment StoreEntitySet="Editor">
+          <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+          <ScalarProperty Name="EditorName" ColumnName="EditorName" />
+          <ScalarProperty Name="EditorID" ColumnName="EditorID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Reviews">
+      <EntityTypeMapping TypeName="AstulusModel.Review">
+        <MappingFragment StoreEntitySet="Review">
+          <ScalarProperty Name="ReviewScore" ColumnName="ReviewScore" />
+          <ScalarProperty Name="BookID" ColumnName="BookID" />
+          <ScalarProperty Name="UserID" ColumnName="UserID" />
+          <ScalarProperty Name="ReviewText" ColumnName="ReviewText" />
+          <ScalarProperty Name="ReviewID" ColumnName="ReviewID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Users">
+      <EntityTypeMapping TypeName="AstulusModel.User">
+        <MappingFragment StoreEntitySet="Users">
+          <ScalarProperty Name="Reputation" ColumnName="Reputation" />
+          <ScalarProperty Name="UserScore" ColumnName="UserScore" />
+          <ScalarProperty Name="DateLastLog" ColumnName="DateLastLog" />
+          <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+          <ScalarProperty Name="UserPassword" ColumnName="UserPassword" />
+          <ScalarProperty Name="UserName" ColumnName="UserName" />
+          <ScalarProperty Name="UserID" ColumnName="UserID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

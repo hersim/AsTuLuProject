@@ -1,0 +1,172 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="AstulusModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityContainer Name="AstulusModelStoreContainer">
+    <EntitySet Name="Book" EntityType="AstulusModel.Store.Book" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Category" EntityType="AstulusModel.Store.Category" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Comment" EntityType="AstulusModel.Store.Comment" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Editor" EntityType="AstulusModel.Store.Editor" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Review" EntityType="AstulusModel.Store.Review" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Users" EntityType="AstulusModel.Store.Users" store:Type="Tables" Schema="dbo" />
+    <AssociationSet Name="FKBookCategory" Association="AstulusModel.Store.FKBookCategory">
+      <End Role="Category" EntitySet="Category" />
+      <End Role="Book" EntitySet="Book" />
+    </AssociationSet>
+    <AssociationSet Name="FKBookEditor" Association="AstulusModel.Store.FKBookEditor">
+      <End Role="Editor" EntitySet="Editor" />
+      <End Role="Book" EntitySet="Book" />
+    </AssociationSet>
+    <AssociationSet Name="FKCommentReview" Association="AstulusModel.Store.FKCommentReview">
+      <End Role="Review" EntitySet="Review" />
+      <End Role="Comment" EntitySet="Comment" />
+    </AssociationSet>
+    <AssociationSet Name="FKCommentUser" Association="AstulusModel.Store.FKCommentUser">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="Comment" EntitySet="Comment" />
+    </AssociationSet>
+    <AssociationSet Name="FKReviewBook" Association="AstulusModel.Store.FKReviewBook">
+      <End Role="Book" EntitySet="Book" />
+      <End Role="Review" EntitySet="Review" />
+    </AssociationSet>
+    <AssociationSet Name="FKReviewUser" Association="AstulusModel.Store.FKReviewUser">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="Review" EntitySet="Review" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="Book">
+    <Key>
+      <PropertyRef Name="BookID" />
+    </Key>
+    <Property Name="BookID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="BookName" Type="varchar" Nullable="false" MaxLength="200" />
+    <Property Name="PrimaryAuthor" Type="varchar" Nullable="false" MaxLength="150" />
+    <Property Name="SecondAuthor" Type="varchar" MaxLength="150" />
+    <Property Name="ThirdAuthor" Type="varchar" MaxLength="150" />
+    <Property Name="BookISBN" Type="varchar" MaxLength="70" />
+    <Property Name="BookNumber" Type="int" />
+    <Property Name="BookType" Type="varchar" Nullable="false" MaxLength="50" />
+    <Property Name="BookLanguage" Type="int" Nullable="false" />
+    <Property Name="PageNumber" Type="int" Nullable="false" />
+    <Property Name="PublishedDate" Type="datetime" />
+    <Property Name="Score" Type="int" Nullable="false" />
+    <Property Name="CategoryID" Type="int" Nullable="false" />
+    <Property Name="EditorID" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Category">
+    <Key>
+      <PropertyRef Name="CategoryID" />
+    </Key>
+    <Property Name="CategoryID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="CategoryName" Type="varchar" Nullable="false" MaxLength="100" />
+  </EntityType>
+  <EntityType Name="Comment">
+    <Key>
+      <PropertyRef Name="CommentID" />
+    </Key>
+    <Property Name="CommentID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="CommentText" Type="varchar" Nullable="false" MaxLength="140" />
+    <Property Name="UserID" Type="int" Nullable="false" />
+    <Property Name="ReviewID" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Editor">
+    <Key>
+      <PropertyRef Name="EditorID" />
+    </Key>
+    <Property Name="EditorID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="EditorName" Type="varchar" Nullable="false" MaxLength="200" />
+    <Property Name="DateCreated" Type="datetime" />
+  </EntityType>
+  <EntityType Name="Review">
+    <Key>
+      <PropertyRef Name="ReviewID" />
+    </Key>
+    <Property Name="ReviewID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="ReviewText" Type="varchar" Nullable="false" MaxLength="300" />
+    <Property Name="UserID" Type="int" Nullable="false" />
+    <Property Name="BookID" Type="int" Nullable="false" />
+    <Property Name="ReviewScore" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Users">
+    <Key>
+      <PropertyRef Name="UserID" />
+    </Key>
+    <Property Name="UserID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="UserName" Type="varchar" MaxLength="120" />
+    <Property Name="UserPassword" Type="varchar" MaxLength="1" />
+    <Property Name="DateCreated" Type="datetime" />
+    <Property Name="DateLastLog" Type="datetime" />
+    <Property Name="UserScore" Type="int" Nullable="false" />
+    <Property Name="Reputation" Type="varchar" MaxLength="50" />
+  </EntityType>
+  <Association Name="FKBookCategory">
+    <End Role="Category" Type="AstulusModel.Store.Category" Multiplicity="1" />
+    <End Role="Book" Type="AstulusModel.Store.Book" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Category">
+        <PropertyRef Name="CategoryID" />
+      </Principal>
+      <Dependent Role="Book">
+        <PropertyRef Name="CategoryID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FKBookEditor">
+    <End Role="Editor" Type="AstulusModel.Store.Editor" Multiplicity="1" />
+    <End Role="Book" Type="AstulusModel.Store.Book" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Editor">
+        <PropertyRef Name="EditorID" />
+      </Principal>
+      <Dependent Role="Book">
+        <PropertyRef Name="EditorID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FKCommentReview">
+    <End Role="Review" Type="AstulusModel.Store.Review" Multiplicity="1" />
+    <End Role="Comment" Type="AstulusModel.Store.Comment" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Review">
+        <PropertyRef Name="ReviewID" />
+      </Principal>
+      <Dependent Role="Comment">
+        <PropertyRef Name="ReviewID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FKCommentUser">
+    <End Role="Users" Type="AstulusModel.Store.Users" Multiplicity="1" />
+    <End Role="Comment" Type="AstulusModel.Store.Comment" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="UserID" />
+      </Principal>
+      <Dependent Role="Comment">
+        <PropertyRef Name="UserID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FKReviewBook">
+    <End Role="Book" Type="AstulusModel.Store.Book" Multiplicity="1" />
+    <End Role="Review" Type="AstulusModel.Store.Review" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Book">
+        <PropertyRef Name="BookID" />
+      </Principal>
+      <Dependent Role="Review">
+        <PropertyRef Name="BookID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FKReviewUser">
+    <End Role="Users" Type="AstulusModel.Store.Users" Multiplicity="1" />
+    <End Role="Review" Type="AstulusModel.Store.Review" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="UserID" />
+      </Principal>
+      <Dependent Role="Review">
+        <PropertyRef Name="UserID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>

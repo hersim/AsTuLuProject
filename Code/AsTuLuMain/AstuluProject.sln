@@ -1,0 +1,29 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AstuluAdmin", "AstuluProject\AstuluAdmin.csproj", "{CFEDB0DE-2427-4AE1-B8CB-4481E3500DDA}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CFEDB0DE-2427-4AE1-B8CB-4481E3500DDA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CFEDB0DE-2427-4AE1-B8CB-4481E3500DDA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CFEDB0DE-2427-4AE1-B8CB-4481E3500DDA}.Debug|x86.ActiveCfg = Debug|x86
+		{CFEDB0DE-2427-4AE1-B8CB-4481E3500DDA}.Debug|x86.Build.0 = Debug|x86
+		{CFEDB0DE-2427-4AE1-B8CB-4481E3500DDA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CFEDB0DE-2427-4AE1-B8CB-4481E3500DDA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CFEDB0DE-2427-4AE1-B8CB-4481E3500DDA}.Release|x86.ActiveCfg = Release|x86
+		{CFEDB0DE-2427-4AE1-B8CB-4481E3500DDA}.Release|x86.Build.0 = Release|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		VisualSVNWorkingCopyRoot = .
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,202 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="AstulusModel" Alias="Self" p1:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:p1="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityContainer Name="AstulusEntities" p1:LazyLoadingEnabled="true">
+    <EntitySet Name="Books" EntityType="AstulusModel.Book" />
+    <EntitySet Name="Categories" EntityType="AstulusModel.Category" />
+    <EntitySet Name="Comments" EntityType="AstulusModel.Comment" />
+    <EntitySet Name="Editors" EntityType="AstulusModel.Editor" />
+    <EntitySet Name="Reviews" EntityType="AstulusModel.Review" />
+    <EntitySet Name="Users" EntityType="AstulusModel.User" />
+    <AssociationSet Name="FKBookCategory" Association="AstulusModel.FKBookCategory">
+      <End Role="Category" EntitySet="Categories" />
+      <End Role="Book" EntitySet="Books" />
+    </AssociationSet>
+    <AssociationSet Name="FKBookEditor" Association="AstulusModel.FKBookEditor">
+      <End Role="Editor" EntitySet="Editors" />
+      <End Role="Book" EntitySet="Books" />
+    </AssociationSet>
+    <AssociationSet Name="FKReviewBook" Association="AstulusModel.FKReviewBook">
+      <End Role="Book" EntitySet="Books" />
+      <End Role="Review" EntitySet="Reviews" />
+    </AssociationSet>
+    <AssociationSet Name="FKCommentReview" Association="AstulusModel.FKCommentReview">
+      <End Role="User" EntitySet="Users" />
+      <End Role="Comment" EntitySet="Comments" />
+    </AssociationSet>
+    <AssociationSet Name="FKCommentUser" Association="AstulusModel.FKCommentUser">
+      <End Role="User" EntitySet="Users" />
+      <End Role="Comment" EntitySet="Comments" />
+    </AssociationSet>
+    <AssociationSet Name="FKReviewUser" Association="AstulusModel.FKReviewUser">
+      <End Role="User" EntitySet="Users" />
+      <End Role="Review" EntitySet="Reviews" />
+    </AssociationSet>
+    <AssociationSet Name="FKCommentReview1" Association="AstulusModel.FKCommentReview1">
+      <End Role="Review" EntitySet="Reviews" />
+      <End Role="Comment" EntitySet="Comments" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="Book">
+    <Key>
+      <PropertyRef Name="BookID" />
+    </Key>
+    <Property Type="Int32" Name="BookID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Type="String" Name="BookName" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Type="String" Name="PrimaryAuthor" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
+    <Property Type="String" Name="SecondAuthor" MaxLength="150" FixedLength="false" Unicode="false" />
+    <Property Type="String" Name="ThirdAuthor" MaxLength="150" FixedLength="false" Unicode="false" />
+    <Property Type="String" Name="BookISBN" MaxLength="70" FixedLength="false" Unicode="false" />
+    <Property Type="Int32" Name="BookNumber" />
+    <Property Type="String" Name="BookType" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Type="Int32" Name="BookLanguage" Nullable="false" />
+    <Property Type="Int32" Name="PageNumber" Nullable="false" />
+    <Property Type="DateTime" Name="PublishedDate" Precision="3" />
+    <Property Type="Int32" Name="Score" Nullable="false" />
+    <Property Type="Int32" Name="CategoryID" Nullable="false" />
+    <Property Type="Int32" Name="EditorID" Nullable="false" />
+    <NavigationProperty Name="Category" Relationship="AstulusModel.FKBookCategory" FromRole="Book" ToRole="Category" />
+    <NavigationProperty Name="Editor" Relationship="AstulusModel.FKBookEditor" FromRole="Book" ToRole="Editor" />
+    <NavigationProperty Name="Reviews" Relationship="AstulusModel.FKReviewBook" FromRole="Book" ToRole="Review" />
+  </EntityType>
+  <EntityType Name="Category">
+    <Key>
+      <PropertyRef Name="CategoryID" />
+    </Key>
+    <Property Type="Int32" Name="CategoryID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Type="String" Name="CategoryName" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="Books" Relationship="AstulusModel.FKBookCategory" FromRole="Category" ToRole="Book" />
+  </EntityType>
+  <EntityType Name="Comment">
+    <Key>
+      <PropertyRef Name="CommentID" />
+    </Key>
+    <Property Type="Int32" Name="CommentID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Type="String" Name="CommentText" Nullable="false" MaxLength="140" FixedLength="false" Unicode="false" />
+    <Property Type="Int32" Name="UserID" Nullable="false" />
+    <Property Type="Int32" Name="ReviewID" Nullable="false" />
+    <NavigationProperty Name="User" Relationship="AstulusModel.FKCommentReview" FromRole="Comment" ToRole="User" />
+    <NavigationProperty Name="User1" Relationship="AstulusModel.FKCommentUser" FromRole="Comment" ToRole="User" />
+    <NavigationProperty Name="Review" Relationship="AstulusModel.FKCommentReview1" FromRole="Comment" ToRole="Review" />
+  </EntityType>
+  <EntityType Name="Editor">
+    <Key>
+      <PropertyRef Name="EditorID" />
+    </Key>
+    <Property Type="Int32" Name="EditorID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Type="String" Name="EditorName" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Type="DateTime" Name="DateCreated" Precision="3" />
+    <NavigationProperty Name="Books" Relationship="AstulusModel.FKBookEditor" FromRole="Editor" ToRole="Book" />
+  </EntityType>
+  <EntityType Name="Review">
+    <Key>
+      <PropertyRef Name="ReviewID" />
+    </Key>
+    <Property Type="Int32" Name="ReviewID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Type="String" Name="ReviewText" Nullable="false" MaxLength="300" FixedLength="false" Unicode="false" />
+    <Property Type="Int32" Name="UserID" Nullable="false" />
+    <Property Type="Int32" Name="BookID" Nullable="false" />
+    <Property Type="Int32" Name="ReviewScore" Nullable="false" />
+    <NavigationProperty Name="Book" Relationship="AstulusModel.FKReviewBook" FromRole="Review" ToRole="Book" />
+    <NavigationProperty Name="User" Relationship="AstulusModel.FKReviewUser" FromRole="Review" ToRole="User" />
+    <NavigationProperty Name="Comments" Relationship="AstulusModel.FKCommentReview1" FromRole="Review" ToRole="Comment" />
+  </EntityType>
+  <EntityType Name="User">
+    <Key>
+      <PropertyRef Name="UserID" />
+    </Key>
+    <Property Type="Int32" Name="UserID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Type="String" Name="UserName" MaxLength="120" FixedLength="false" Unicode="false" />
+    <Property Type="String" Name="UserPassword" MaxLength="1" FixedLength="false" Unicode="false" />
+    <Property Type="DateTime" Name="DateCreated" Precision="3" />
+    <Property Type="DateTime" Name="DateLastLog" Precision="3" />
+    <Property Type="Int32" Name="UserScore" Nullable="false" />
+    <Property Type="String" Name="Reputation" MaxLength="50" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="Comments" Relationship="AstulusModel.FKCommentReview" FromRole="User" ToRole="Comment" />
+    <NavigationProperty Name="Comments1" Relationship="AstulusModel.FKCommentUser" FromRole="User" ToRole="Comment" />
+    <NavigationProperty Name="Reviews" Relationship="AstulusModel.FKReviewUser" FromRole="User" ToRole="Review" />
+  </EntityType>
+  <Association Name="FKBookCategory">
+    <End Type="AstulusModel.Category" Role="Category" Multiplicity="1" />
+    <End Type="AstulusModel.Book" Role="Book" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Category">
+        <PropertyRef Name="CategoryID" />
+      </Principal>
+      <Dependent Role="Book">
+        <PropertyRef Name="CategoryID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FKBookEditor">
+    <End Type="AstulusModel.Editor" Role="Editor" Multiplicity="1" />
+    <End Type="AstulusModel.Book" Role="Book" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Editor">
+        <PropertyRef Name="EditorID" />
+      </Principal>
+      <Dependent Role="Book">
+        <PropertyRef Name="EditorID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FKReviewBook">
+    <End Type="AstulusModel.Book" Role="Book" Multiplicity="1" />
+    <End Type="AstulusModel.Review" Role="Review" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Book">
+        <PropertyRef Name="BookID" />
+      </Principal>
+      <Dependent Role="Review">
+        <PropertyRef Name="BookID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FKCommentReview">
+    <End Type="AstulusModel.User" Role="User" Multiplicity="1" />
+    <End Type="AstulusModel.Comment" Role="Comment" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="UserID" />
+      </Principal>
+      <Dependent Role="Comment">
+        <PropertyRef Name="ReviewID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FKCommentUser">
+    <End Type="AstulusModel.User" Role="User" Multiplicity="1" />
+    <End Type="AstulusModel.Comment" Role="Comment" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="UserID" />
+      </Principal>
+      <Dependent Role="Comment">
+        <PropertyRef Name="UserID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FKReviewUser">
+    <End Type="AstulusModel.User" Role="User" Multiplicity="1" />
+    <End Type="AstulusModel.Review" Role="Review" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="UserID" />
+      </Principal>
+      <Dependent Role="Review">
+        <PropertyRef Name="UserID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FKCommentReview1">
+    <End Type="AstulusModel.Review" Role="Review" Multiplicity="1" />
+    <End Type="AstulusModel.Comment" Role="Comment" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Review">
+        <PropertyRef Name="ReviewID" />
+      </Principal>
+      <Dependent Role="Comment">
+        <PropertyRef Name="ReviewID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>

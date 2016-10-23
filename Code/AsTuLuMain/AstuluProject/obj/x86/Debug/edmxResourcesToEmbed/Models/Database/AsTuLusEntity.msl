@@ -1,0 +1,111 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="AsTuLusModelStoreContainer" CdmEntityContainer="AsTuLusEntities">
+    <EntitySetMapping Name="Books">
+      <EntityTypeMapping TypeName="AsTuLusModel.Book">
+        <MappingFragment StoreEntitySet="Book">
+          <ScalarProperty Name="UserID" ColumnName="UserID" />
+          <ScalarProperty Name="BookStatus" ColumnName="BookStatus" />
+          <ScalarProperty Name="IsTranslated" ColumnName="IsTranslated" />
+          <ScalarProperty Name="TimesConsulted" ColumnName="TimesConsulted" />
+          <ScalarProperty Name="EditorID" ColumnName="EditorID" />
+          <ScalarProperty Name="CategoryID" ColumnName="CategoryID" />
+          <ScalarProperty Name="Score" ColumnName="Score" />
+          <ScalarProperty Name="DateAdded" ColumnName="DateAdded" />
+          <ScalarProperty Name="PublishedYear" ColumnName="PublishedYear" />
+          <ScalarProperty Name="PageNumber" ColumnName="PageNumber" />
+          <ScalarProperty Name="BookLanguage" ColumnName="BookLanguage" />
+          <ScalarProperty Name="BookSerie" ColumnName="BookSerie" />
+          <ScalarProperty Name="BookCollection" ColumnName="BookCollection" />
+          <ScalarProperty Name="BookNumber" ColumnName="BookNumber" />
+          <ScalarProperty Name="BookISBN" ColumnName="BookISBN" />
+          <ScalarProperty Name="ThirdAuthor" ColumnName="ThirdAuthor" />
+          <ScalarProperty Name="SecondAuthor" ColumnName="SecondAuthor" />
+          <ScalarProperty Name="PrimaryAuthor" ColumnName="PrimaryAuthor" />
+          <ScalarProperty Name="BookName" ColumnName="BookName" />
+          <ScalarProperty Name="BookID" ColumnName="BookID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="BookByUsers">
+      <EntityTypeMapping TypeName="AsTuLusModel.BookByUser">
+        <MappingFragment StoreEntitySet="BookByUser">
+          <ScalarProperty Name="DateModified" ColumnName="DateModified" />
+          <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+          <ScalarProperty Name="LikeState" ColumnName="LikeState" />
+          <ScalarProperty Name="UserAccountID" ColumnName="UserAccountID" />
+          <ScalarProperty Name="BookID" ColumnName="BookID" />
+          <ScalarProperty Name="BookByUserID" ColumnName="BookByUserID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Categories">
+      <EntityTypeMapping TypeName="AsTuLusModel.Category">
+        <MappingFragment StoreEntitySet="Category">
+          <ScalarProperty Name="DateAdded" ColumnName="DateAdded" />
+          <ScalarProperty Name="TimesCategoryConsulted" ColumnName="TimesCategoryConsulted" />
+          <ScalarProperty Name="CategoryName" ColumnName="CategoryName" />
+          <ScalarProperty Name="CategoryID" ColumnName="CategoryID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Comments">
+      <EntityTypeMapping TypeName="AsTuLusModel.Comment">
+        <MappingFragment StoreEntitySet="Comment">
+          <ScalarProperty Name="DateAdded" ColumnName="DateAdded" />
+          <ScalarProperty Name="ReviewID" ColumnName="ReviewID" />
+          <ScalarProperty Name="AccountID" ColumnName="AccountID" />
+          <ScalarProperty Name="CommentText" ColumnName="CommentText" />
+          <ScalarProperty Name="CommentID" ColumnName="CommentID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Editors">
+      <EntityTypeMapping TypeName="AsTuLusModel.Editor">
+        <MappingFragment StoreEntitySet="Editor">
+          <ScalarProperty Name="TimeEditorConsulted" ColumnName="TimeEditorConsulted" />
+          <ScalarProperty Name="DateAdded" ColumnName="DateAdded" />
+          <ScalarProperty Name="EditorScore" ColumnName="EditorScore" />
+          <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+          <ScalarProperty Name="EditorName" ColumnName="EditorName" />
+          <ScalarProperty Name="EditorID" ColumnName="EditorID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Reviews">
+      <EntityTypeMapping TypeName="AsTuLusModel.Review">
+        <MappingFragment StoreEntitySet="Review">
+          <ScalarProperty Name="DateAdded" ColumnName="DateAdded" />
+          <ScalarProperty Name="ReviewScore" ColumnName="ReviewScore" />
+          <ScalarProperty Name="BookID" ColumnName="BookID" />
+          <ScalarProperty Name="AccountID" ColumnName="AccountID" />
+          <ScalarProperty Name="ReviewText" ColumnName="ReviewText" />
+          <ScalarProperty Name="ReviewID" ColumnName="ReviewID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="SubCategories">
+      <EntityTypeMapping TypeName="AsTuLusModel.SubCategory">
+        <MappingFragment StoreEntitySet="SubCategory">
+          <ScalarProperty Name="DateAdded" ColumnName="DateAdded" />
+          <ScalarProperty Name="TimesSubCatConsulted" ColumnName="TimesSubCatConsulted" />
+          <ScalarProperty Name="CategoryID" ColumnName="CategoryID" />
+          <ScalarProperty Name="SubCategoryName" ColumnName="SubCategoryName" />
+          <ScalarProperty Name="SubCategoryID" ColumnName="SubCategoryID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="UserAccounts">
+      <EntityTypeMapping TypeName="AsTuLusModel.UserAccount">
+        <MappingFragment StoreEntitySet="UserAccount">
+          <ScalarProperty Name="AccountName" ColumnName="AccountName" />
+          <ScalarProperty Name="Reputation" ColumnName="Reputation" />
+          <ScalarProperty Name="AccountScore" ColumnName="AccountScore" />
+          <ScalarProperty Name="DateLastLog" ColumnName="DateLastLog" />
+          <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+          <ScalarProperty Name="AccountID" ColumnName="AccountID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>
