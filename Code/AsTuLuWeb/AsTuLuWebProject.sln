@@ -1,7 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AsTuLuWebProject", "AsTuLuWebProject\AsTuLuWebProject.csproj", "{32848CE4-875D-445E-ABA7-0C9F10CB3E31}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AsTuLuWebProject_int", "AsTuLuWebProject\AsTuLuWebProject_int.csproj", "{32848CE4-875D-445E-ABA7-0C9F10CB3E31}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AsTuLuWebProject_prog", "AsTuLuWebProject_prog\AsTuLuWebProject_prog.csproj", "{711366E3-BD49-4B59-B064-FE127EB7DA26}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -13,6 +15,10 @@ Global
 		{32848CE4-875D-445E-ABA7-0C9F10CB3E31}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{32848CE4-875D-445E-ABA7-0C9F10CB3E31}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{32848CE4-875D-445E-ABA7-0C9F10CB3E31}.Release|Any CPU.Build.0 = Release|Any CPU
+		{711366E3-BD49-4B59-B064-FE127EB7DA26}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{711366E3-BD49-4B59-B064-FE127EB7DA26}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{711366E3-BD49-4B59-B064-FE127EB7DA26}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{711366E3-BD49-4B59-B064-FE127EB7DA26}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

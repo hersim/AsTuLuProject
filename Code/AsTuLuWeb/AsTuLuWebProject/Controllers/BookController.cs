@@ -1,9 +1,10 @@
 ﻿using System.Web.Mvc;
-using AsTuLuWebProject.Database;
-using AsTuLuWebProject.Models.Interfaces;
-using AsTuLuWebProject.Models.Interfaces.DAL;
+using AsTuLuWebProject_prog.DAL;
+using AsTuLuWebProject_prog.Database;
 using AsTuLuWebProject.Utilities;
 using AsTuLuWebProject.Utilities.Containers;
+using AsTuLuWebProject_prog.Models;
+using AsTuLuWebProject_prog.Repositories;
 
 namespace AsTuLuWebProject.Controllers
 {
@@ -25,7 +26,7 @@ namespace AsTuLuWebProject.Controllers
             }
             else
             {
-                result = BookRepository.UpdateBookStatus(bookID, buttonId, User.Identity.Name);
+                // result = BookRepository.UpdateBookStatus(bookID, buttonId, User.Identity.Name);
             }
 
             return Json(result);
@@ -35,7 +36,7 @@ namespace AsTuLuWebProject.Controllers
         {
             BookContainer bookToShow = new BookContainer();
 
-            Book book = BookRepository.GetBookById((int)bookID);
+            BookModel book = BookRepository.GetBookById((int)bookID);
 
             if (book == null)
             {
@@ -59,7 +60,7 @@ namespace AsTuLuWebProject.Controllers
                     throw new System.Exception("User was not found");
                 }
 
-                bookToShow.BookRelationship = BookRepository.GetRelationshipForBook(userToShow, book);
+                // bookToShow.BookRelationship = BookRepository.GetRelationshipForBook(userToShow, book);
             }
 
             return View(bookToShow);

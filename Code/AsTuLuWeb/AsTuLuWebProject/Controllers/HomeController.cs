@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
-using AsTuLuWebProject.Database;
-using AsTuLuWebProject.Models.Interfaces;
-using AsTuLuWebProject.Models.Interfaces.DAL;
-using AsTuLuWebProject.Models.ViewModels;
+using AsTuLuWebProject.ViewModels;
+using AsTuLuWebProject_prog.DAL;
+using AsTuLuWebProject_prog.Database;
+using AsTuLuWebProject_prog.Repositories;
 
 namespace AsTuLuWebProject.Controllers
 {
@@ -110,19 +110,19 @@ namespace AsTuLuWebProject.Controllers
                 thirdOption = thirdSelection;
             }
 
-            List<BookDisplay> listBooks;
+            List<BookDisplay> listBooks = new List<BookDisplay>();
 
             if (User.Identity.IsAuthenticated)
             {
                 UserAccount account = UserRepository.GetUserByName(User.Identity.Name);
 
-                listBooks = BookRepository.GetListOfBooks(pageNumber, firstOption, secondOption, thirdOption,
-                                                                 account.AccountID);
+                //listBooks = BookRepository.GetListOfBooks(pageNumber, firstOption, secondOption, thirdOption,
+                //                                                 account.AccountID);
             }
             else
             {
-                listBooks = BookRepository.GetListOfBooks(pageNumber, firstOption, secondOption, thirdOption,
-                                                                 null);
+                //listBooks = BookRepository.GetListOfBooks(pageNumber, firstOption, secondOption, thirdOption,
+                //                                                 null);
             }
 
             pageNumber++;
@@ -151,19 +151,19 @@ namespace AsTuLuWebProject.Controllers
                     }
                     else
                     {
-                        listBooks = BookRepository.ListRandomBooks(listBooks, pageNumber);
+                        // listBooks = BookRepository.ListRandomBooks(listBooks, pageNumber);
                     }
                 }
                 else
                 {
-                    listBooks = BookRepository.ListRandomBooks(listBooks, pageNumber);
+                    // listBooks = BookRepository.ListRandomBooks(listBooks, pageNumber);
                 }
             }
             else
             {
                 listBooks = (List<BookDisplay>)Session[LIST_BOOKS];
 
-                listBooks = BookRepository.ListRandomBooks(listBooks, pageNumber);
+                // listBooks = BookRepository.ListRandomBooks(listBooks, pageNumber);
             }
 
             Session[LIST_BOOKS] = listBooks;

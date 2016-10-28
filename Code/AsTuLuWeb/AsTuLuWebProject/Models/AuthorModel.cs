@@ -1,5 +1,5 @@
 ﻿using System;
-using AsTuLuWebProject.Database;
+using AsTuLuWebProject_prog.Database;
 
 namespace AsTuLuWebProject.Models
 {

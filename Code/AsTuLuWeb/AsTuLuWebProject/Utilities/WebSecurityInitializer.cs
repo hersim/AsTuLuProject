@@ -1,8 +1,8 @@
 ﻿using System.Web;
 using System.Web.Security;
 using AsTuLuWebProject.Filters;
-using AsTuLuWebProject.Models.Interfaces;
 using AsTuLuWebProject.Utilities;
+using AsTuLuWebProject_prog.Repositories;
 using WebMatrix.WebData;
 
 [assembly: PreApplicationStartMethod(typeof(PreApplicationTasks), "Initializer")]

@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using AsTuLuWebProject.Database;
+using AsTuLuWebProject_prog.Database;
 
 namespace AsTuLuWebProject.Models
 {
