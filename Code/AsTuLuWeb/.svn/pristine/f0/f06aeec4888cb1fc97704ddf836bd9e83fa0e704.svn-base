@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="913ca0c9982b481f8c3746bfac5ecd99" Name="Diagram1" ZoomLevel="81">
+        <EntityTypeShape EntityType="AsTuLusModel.Book" Width="2.875" PointX="12.25" PointY="29.75" />
+        <EntityTypeShape EntityType="AsTuLusModel.Category" Width="2.5" PointX="4.625" PointY="33.25" />
+        <EntityTypeShape EntityType="AsTuLusModel.Comment" Width="1.5" PointX="15.625" PointY="40" />
+        <EntityTypeShape EntityType="AsTuLusModel.Editor" Width="2.5" PointX="8.875" PointY="31.25" />
+        <EntityTypeShape EntityType="AsTuLusModel.Review" Width="1.5" PointX="13.375" PointY="36.375" />
+        <EntityTypeShape EntityType="AsTuLusModel.SubCategory" Width="2.375" PointX="1.125" PointY="35.75" />
+        <EntityTypeShape EntityType="AsTuLusModel.UserAccount" Width="2.625" PointX="18" PointY="36.375" />
+        <EntityTypeShape EntityType="AsTuLusModel.UserProfile" Width="2.5" PointX="3" PointY="43.5" />
+        <EntityTypeShape EntityType="AsTuLusModel.webpages_Membership" Width="3.875" PointX="3.25" PointY="46" />
+        <EntityTypeShape EntityType="AsTuLusModel.webpages_OAuthMembership" Width="2.375" PointX="8.625" PointY="46.5" />
+        <EntityTypeShape EntityType="AsTuLusModel.webpages_Roles" Width="2.125" PointX="7" PointY="43.75" />
+        <AssociationConnector Association="AsTuLusModel.FKBookCategory" />
+        <AssociationConnector Association="AsTuLusModel.FKBookEditor" />
+        <AssociationConnector Association="AsTuLusModel.FKReviewBook" />
+        <AssociationConnector Association="AsTuLusModel.FKSubCategoryCategory" />
+        <AssociationConnector Association="AsTuLusModel.FKCommentReview" />
+        <AssociationConnector Association="AsTuLusModel.FKCommentUser" />
+        <AssociationConnector Association="AsTuLusModel.FKReviewUser" />
+        <AssociationConnector Association="AsTuLusModel.webpages_UsersInRoles" />
+        <EntityTypeShape EntityType="AsTuLusModel.BookByUser" Width="2.25" PointX="17.125" PointY="31.875" />
+        <AssociationConnector Association="AsTuLusModel.FKBookToUser" />
+        <AssociationConnector Association="AsTuLusModel.FKUserToBook" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

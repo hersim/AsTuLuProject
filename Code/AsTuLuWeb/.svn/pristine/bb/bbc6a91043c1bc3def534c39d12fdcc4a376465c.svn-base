@@ -1,0 +1,7 @@
+﻿namespace AsTuLuWebProject.Viewmodels
+{
+    public class AuthorModel
+    {
+        public string mName { get; set; }
+    }
+}

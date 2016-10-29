@@ -1,0 +1,13 @@
+﻿using System;
+using System.Collections.Generic;
+using AsTuLuWebProject.Database;
+
+namespace AsTuLuWebProject.Models.Interfaces
+{
+    public interface IBookRelationshipRepository : IDisposable
+    {
+        BookByUser GetRelationshipForBookAndUser(int bookID, int _userAccountID);
+
+        List<BookByUser> ListBookRelationshipsForUser(int _userAccountID);
+    }
+}

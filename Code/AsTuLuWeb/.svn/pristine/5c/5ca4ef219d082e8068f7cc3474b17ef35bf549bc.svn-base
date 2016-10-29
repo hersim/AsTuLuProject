@@ -1,0 +1,117 @@
+﻿using System.Web.Mvc;
+using AsTuLuWebProject.Database;
+using AsTuLuWebProject.Models.Interfaces;
+using AsTuLuWebProject.Models.Interfaces.DAL;
+using AsTuLuWebProject.Utilities;
+using AsTuLuWebProject.Utilities.Containers;
+
+namespace AsTuLuWebProject.Controllers
+{
+    public class BookController : Controller
+    {
+        private static IBookRepository mBookRepository;
+        private static IUserRepository mUserRepository;
+        private static ICategoryRepository mCategoryRepository;
+        private static IEditorRepository mEditorRepository;
+
+        public ActionResult UpdateRelationship(int bookID, string buttonId)
+        {
+            // # update la relation en utilisant le _book id, en allant chercher le request.identity et le id du bouton.
+            UserActionResult result = new UserActionResult();
+            
+            if (!Request.IsAuthenticated)
+            {
+                result.ResultMessage = "Vous devez vous connecter pour effectuer cette action!";
+            }
+            else
+            {
+                result = mBookRepository.UpdateBookStatus(bookID, buttonId, User.Identity.Name);
+            }
+
+            return Json(result);
+        }
+
+        public ActionResult BookDetails(int? bookID)
+        {
+            bool hasDisposed = false;
+
+            if (mBookRepository == null || mBookRepository.HasDisposed())
+            {
+                AsTuLusEntities db = new AsTuLusEntities();
+
+                if (mBookRepository == null || mBookRepository.HasDisposed())
+                {
+                    if (mBookRepository != null && mBookRepository.HasDisposed())
+                    {
+                        hasDisposed = true;
+                    }
+                    
+                    mBookRepository = new BookRepository(db);
+
+                    mUserRepository = new UserRepository();
+
+                    mCategoryRepository = new CategoryRepository(db);
+
+                    mEditorRepository = new EditorRepository(db);
+                }
+
+                mBookRepository = new BookRepository(db);
+            }
+
+            BookContainer bookToShow = new BookContainer();
+
+            Book book = mBookRepository.GetBookById((int)bookID, hasDisposed);
+
+            if (book == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            bookToShow.BookToShow = book;
+
+            bookToShow.BookRelationship = new BookByUser();
+
+            bookToShow.ListCategories = mCategoryRepository.ListCategoriesByBookID((int) bookID);
+
+            bookToShow.ListAuthors = mBookRepository.ListAuthorsByBook((int) bookID);
+
+            bookToShow.ListEditors = mEditorRepository.ListEditorsByBookId((int) bookID);
+
+            if (Request.IsAuthenticated)
+            {
+                UserAccount userToShow = mUserRepository.GetUserByName(User.Identity.Name);
+
+                if (userToShow == null)
+                {
+                    throw new System.Exception("User was not found");
+                }
+
+                bookToShow.BookRelationship = mBookRepository.GetRelationshipForBook(userToShow, book);
+            }
+
+            mBookRepository.Dispose();
+
+            return View(bookToShow);
+        }
+
+        public ActionResult ListBySerie(string serie)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public ActionResult ListByCategory(int categoryID)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public ActionResult ListByAuthor(string authorName)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public ActionResult ListByEditor(int editorid)
+        {
+            throw new System.NotImplementedException();
+        }
+    }
+}

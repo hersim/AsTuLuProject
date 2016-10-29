@@ -1,0 +1,39 @@
+﻿$(document).ready(function () {
+    $('#buttonState').on('click', ".voteButton", function () {
+        var buttonIdValue = $(this).attr('id');
+
+        var bookIdValue = document.getElementById("bookID").value;
+
+        $.post("/Book/UpdateRelationship/", { bookId: bookIdValue, buttonId: buttonIdValue },
+            function(data) {
+                if (data.ResultMessage) {
+                    $('#update-message').fadeOut(function () {
+                        $('#update-message').text(data.ResultMessage);
+                        $('#update-message').fadeIn('slow');
+                        $('#update-message').fadeOut(1500);
+                    });
+                } else {
+                    alert(data.StatusValue);
+                    switch (data.StatusValue) {
+                        // 1 = unliked
+                        case 1:
+                            $('#upvote').css('border', "none");
+                            $('#downvote').css('border', "solid 10px darkred");
+                            alert("ayoye!");
+                            break;
+                        case 2:
+                            $('#upvote').css('border', "solid 10px greenyellow");
+                            $('#downvote').css('border', "none");
+                            alert("ouch!");
+                            break;
+                        default:
+                            $('#upvote').css('border', "none");
+                            $('#downvote').css('border', "none");
+                            alert("oulala!");
+                            break;
+                    }
+                }
+            });
+
+    });
+});

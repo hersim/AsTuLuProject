@@ -1,0 +1,63 @@
+﻿@using System.Collections
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('#moreBooks').click(function() {
+            $.get("@Url.Action("ListBooks")", {
+                    
+                }, function(data) {
+                    $('#bookBody').append(data);
+                });
+        });
+
+        $('#filtrer').click(function() {
+            var value = $('#firstSelected').val();
+
+            var secondValue = $('#secondSelected').val();
+
+            var thirdValue = $('#thirdSelected').val();
+            
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("ListBooks")',
+                data: { firstSelection: value, secondSelection: secondValue, thirdSelection: thirdValue },
+                success: function (data) {
+                    $('#bookBody').html(data);
+                }
+            });
+        });
+
+    });
+
+ </script>
+
+@{
+    ViewBag.Title = "Home Page";
+}
+   
+@using (Html.BeginForm("RandomMode", "Home", FormMethod.Get))
+{
+    <div >
+        <div class="float-left" style="line-height: 40px; text-align: left">
+            Mode: @Html.DropDownList("firstSelection", new SelectList((IEnumerable)ViewData["firstSelection"], "Value", "Text"), "", new { @id = "firstSelected" })
+            Date: @Html.DropDownList("secondSelection", new SelectList((IEnumerable)ViewData["secondSelection"], "Value", "Text"),"", new { @id = "secondSelected" })    
+            Autre: @Html.DropDownList("thirdSelection", new SelectList((IEnumerable)ViewData["thirdSelection"], "Value", "Text"), "",new { @id = "thirdSelected" })    
+            <input type="button" id="filtrer" value="Go" />
+        </div>
+        <div class="float-right">
+            <button type="submit" class="float-right"><img src="~/Content/randomIcon.png" alt="random mode"/></button>            
+        </div>
+    </div>
+}
+
+@using (Html.BeginForm())
+{  
+    <div id="bookBody">
+        @{
+            Html.RenderAction("ListBooks", "Home");
+        }
+    </div>
+    <div class="clear">
+        <a href="javascript:void(0);" id="moreBooks" class="float-right">Plus!</a>        
+    </div>
+    
+}

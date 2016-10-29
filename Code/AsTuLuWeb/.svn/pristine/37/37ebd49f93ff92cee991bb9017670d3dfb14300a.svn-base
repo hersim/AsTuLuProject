@@ -1,0 +1,250 @@
+--USE Astulus;
+--GO
+
+/* First step: drop constraint*/
+ALTER TABLE BookTagForBook DROP CONSTRAINT FKBookTagBook;
+ALTER TABLE BookTagForBook DROP CONSTRAINT FKBookBookTag;
+
+ALTER TABLE ReviewByBook DROP CONSTRAINT FKReviewBook;
+ALTER TABLE ReviewByBook DROP CONSTRAINT FKBookReview;
+
+ALTER TABLE ReviewByUser DROP CONSTRAINT FKReviewUser;
+ALTER TABLE ReviewByUser DROP CONSTRAINT FKUserReview;
+
+ALTER TABLE CommentByUser DROP CONSTRAINT FKCommentUser;
+ALTER TABLE CommentByUser DROP CONSTRAINT FKUserComment;
+
+ALTER TABLE CommentByReview DROP CONSTRAINT FKCommentReview;
+ALTER TABLE CommentByReview DROP CONSTRAINT FKReviewComment;
+
+
+GO
+
+/* Second step: drop tables*/
+DROP TABLE Book;
+DROP TABLE Editor;
+DROP TABLE Category;
+DROP TABLE SubCategory;
+DROP TABLE Review;
+DROP TABLE Comment;
+DROP TABLE UserAccount;
+DROP TABLE BookByUser;
+DROP TABLE BookTag;
+DROP TABLE BookTagForBook;
+DROP TABLE CommentByComment;
+DROP TABLE CommentByReview;
+DROP TABLE CommentByUser;
+DROP TABLE ReviewByBook;
+DROP TABLE ReviewByUser;
+GO
+
+/* Third step: create tables*/
+CREATE TABLE Book
+(
+	BookID INT not null IDENTITY,
+	BookName VARCHAR(200) not null,
+	PrimaryAuthor VARCHAR(150) not null,
+	SecondAuthor VARCHAR(150),
+	ThirdAuthor VARCHAR(150),
+	BookISBN VARCHAR(70),
+	BookNumber INT,
+	BookCollection VARCHAR(100),
+	BookSerie VARCHAR(100),
+	BookLanguage INT not null,
+	PageNumber INT not null,
+	PublishedYear INT,
+	DateAdded Date not null default GETDATE(),
+	Score Int Not null default 0,
+	CategoryID INT not null,
+	EditorID INT not null,
+	TimesConsulted INT not null default 0,
+	IsTranslated bit,
+	BookStatus INT not null default 0,
+	UserID INT,
+);
+GO
+
+CREATE TABLE BookTag
+(
+	BookTagID int not null IDENTITY,
+	Name VARCHAR(50) not null,
+	Score int not null default 0
+);
+GO
+
+CREATE TABLE BookTagForBook
+(
+	BookTagForBookID int not null IDENTITY,
+	BookID int not null,
+	BookTagID int not null
+);
+GO
+
+CREATE TABLE BookByUser
+(
+	BookByUserID INT not null IDENTITY,
+	LikeState INT,
+	DateCreated DATE not null default GETDATE(),
+	DateModified DATE
+)
+
+CREATE TABLE Editor
+(
+	EditorID INT not null IDENTITY,
+	EditorName VARCHAR(200) not null,
+	DateCreated DateTime,
+	EditorScore Int not null default 0,
+	DateAdded Date not null default GETDATE(),
+	TimeEditorConsulted int not null default 0
+);
+GO
+
+CREATE TABLE Category
+(
+	CategoryID Int not null identity,
+	CategoryName Varchar(100) not null,
+	TimesCategoryConsulted int not null default 0,
+	DateAdded Date not null default GETDATE(),
+);
+GO
+
+CREATE TABLE SubCategory
+(
+	SubCategoryID Int not null identity,
+	SubCategoryName Varchar(100) not null,
+	CategoryID int not null,
+	TimesSubCatConsulted int not null default 0,
+	DateAdded Date not null default GETDATE(),
+);
+GO
+
+CREATE TABLE Review
+(
+	ReviewID Int not null identity,
+	ReviewText Varchar(300) not null,
+	ReviewScore Int not null default 0,
+	DateAdded Date not null default GETDATE(),
+);
+GO
+
+CREATE TABLE ReviewByBook
+(
+	ReviewByBookID Int not null identity,
+	ReviewID Int not null,
+	BookID Int not null,
+);
+GO
+
+CREATE TABLE ReviewByUser
+(
+	ReviewByUserID Int not null identity,
+	ReviewId Int not null,
+	UserAccountID Int not null
+);
+GO
+
+CREATE TABLE UserAccount
+(
+	AccountID Int not null identity,
+	DateCreated DateTime not null default GetDate(),
+	DateLastLog DateTime,
+	NbrTimeLogged Int not null default 0,
+	AccountScore Int not null default 0,
+	Reputation Varchar(50),
+	UserID int,
+);
+
+CREATE TABLE CommentByUser
+(
+	CommentByUserID int not null identity,
+	CommentID int not null,
+	UserAccountID int not null,
+);
+GO
+
+CREATE TABLE CommentByComment
+(
+	CommentByCommentID int not null identity,
+	CommentID int not null
+);
+GO
+
+CREATE TABLE Comment
+(
+	CommentID Int not null identity,
+	CommentText Varchar(140) not null,
+	DateAdded Date not null default GETDATE(),
+	Score int not null default 0
+);
+GO
+
+CREATE TABLE CommentByReview
+(
+	CommentByReviewID int not null identity,
+	CommentID int not null,
+	ReviewID int not null
+);
+GO
+
+/* Fourth step: add primary keys*/
+-- Book
+ALTER TABLE Book ADD PRIMARY KEY (BookID)
+GO 
+
+-- Editor
+ALTER TABLE Editor ADD PRIMARY KEY (EditorID)
+GO
+
+-- Category
+ALTER TABLE Category ADD PRIMARY KEY (CategoryID)
+GO
+
+-- SubCategory
+ALTER TABLE SubCategory ADD PRIMARY KEY (SubCategoryID)
+GO
+
+-- Review
+ALTER TABLE Review ADD PRIMARY KEY (ReviewID)
+GO
+
+-- Comment
+ALTER TABLE Comment ADD PRIMARY KEY (CommentID)
+GO
+
+ALTER TABLE UserAccount ADD PRIMARY KEY (AccountID)
+GO
+
+ALTER TABLE BookTag ADD PRIMARY KEY(BookTagID)
+GO
+
+ALTER TABLE BookTagForBook ADD PRIMARY KEY (BookTagForBookID)
+GO
+
+ALTER TABLE ReviewByBook ADD PRIMARY KEY (ReviewByBookID)
+GO
+
+ALTER TABLE ReviewByUser ADD PRIMARY KEY (ReviewByUserID)
+GO
+
+ALTER TABLE CommentByUser ADD PRIMARY KEY (CommentByUserID)
+
+ALTER TABLE CommentByReview ADD PRIMARY KEY (CommentByReviewID)
+
+ALTER TABLE CommentByComment ADD PRIMARY KEY (CommentByCommentID)
+GO
+
+/* Fifth step: add foreign keys*/
+ALTER TABLE BookTagForBook ADD CONSTRAINT FKBookTagBook FOREIGN KEY(BookID) REFERENCES Book(BOOKID);
+ALTER TABLE BookTagForBook ADD CONSTRAINT FKBookBookTag FOREIGN KEY(BookTagID) REFERENCES BookTag(BookTagID);
+
+ALTER TABLE ReviewByBook ADD CONSTRAINT FKReviewBook FOREIGN KEY(ReviewID) REFERENCES Review(ReviewID);
+ALTER TABLE ReviewByBook ADD CONSTRAINT FKBookReview FOREIGN KEY(BookID) REFERENCES Book(BookID);
+
+ALTER TABLE ReviewByUser ADD CONSTRAINT FKReviewUser FOREIGN KEY (ReviewID) REFERENCES Review(ReviewID);
+ALTER TABLE ReviewByUser ADD CONSTRAINT FKUserReview FOREIGN KEY (UserAccountID) REFERENCES UserAccount(AccountID);
+
+ALTER TABLE CommentByUser ADD CONSTRAINT FKCommentUser FOREIGN KEY (CommentID) REFERENCES Comment (CommentID);
+ALTER TABLE CommentByUser ADD CONSTRAINT FKUserComment FOREIGN KEY (UserAccountID) REFERENCES UserAccount (AccountID);
+
+ALTER TABLE CommentByReview ADD CONSTRAINT FKCommentReview FOREIGN KEY (CommentID) REFERENCES Comment (CommentID);
+ALTER TABLE CommentByReview ADD CONSTRAINT FKReviewComment FOREIGN KEY (ReviewID) REFERENCES Review (ReviewID);

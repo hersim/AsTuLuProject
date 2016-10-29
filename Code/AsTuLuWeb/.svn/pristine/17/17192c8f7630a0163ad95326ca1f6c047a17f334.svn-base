@@ -1,0 +1,32 @@
+﻿using System;
+
+namespace AsTuLuWebProject.Models.ViewModels
+{
+    public class BookDisplay
+    {
+        //public BookByUser DisplayBook { get; set; }
+        #region BookProperties
+        
+        public int BookID { get; set; }
+        public int? LikeState { get; set; }
+        public DateTime DateCreated { get; set; }
+        public DateTime? DateModified { get; set; }
+        public string BookName { get; set; }
+        public int? BookNumber { get; set; }
+        public string BookCollection { get; set; }
+        public string BookSerie { get; set; }
+        public int BookLanguage { get; set; }
+        public int PageNumber { get; set; }
+        public int? PublishedYear { get; set; }
+        public System.DateTime DateAdded { get; set; }
+        public int Score { get; set; }
+        public int TimesConsulted { get; set; }
+        public bool? IsTranslated { get; set; }
+        public int BookStatus { get; set; }
+        public int ReviewCount { get; set; }
+
+        #endregion
+        public int UserID { get; set; }
+        
+    }
+}

@@ -1,0 +1,369 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Data.Entity;
+using System.Data.Entity.Validation;
+using System.Diagnostics;
+using System.Linq;
+using AsTuLuWebProject.Database;
+using AsTuLuWebProject.Utilities;
+using AsTuLuWebProject.Utilities.Enums;
+
+namespace AsTuLuWebProject.Models.Interfaces.DAL
+{
+    public class BookRepository : IBookRepository
+    {
+        private readonly AsTuLusEntities Context;  
+
+        private readonly IEditorRepository EditorRepository;
+
+        private readonly ICategoryRepository CategoryRepository;
+
+        private bool Disposed;
+
+        public BookRepository(AsTuLusEntities context)
+        {
+            Context = context;
+
+            EditorRepository = new EditorRepository(context);
+            CategoryRepository = new CategoryRepository(context);
+
+            Disposed = false;
+        }
+
+        public List<Book> ListBooks() 
+        {
+            return Context.Book.ToList();
+        }
+
+        public List<Book> ListHighestRatingBooks()
+        {
+            return Context.Book.OrderBy(x => x.Score).ToList();
+        }
+
+        public List<Book> ListTwentyLatestBooks(int pageNumber, string firstOption, string secondOption)
+        {
+            List<Book> listBook = new List<Book>();
+
+            IQueryable<Book> bookQuery = from b in Context.Book
+                select b;
+
+            int pageCount = pageNumber - 1;
+
+            switch (firstOption)
+            {
+                case "New":
+                    switch (secondOption)
+                    {
+                        case "Score":
+                            listBook = bookQuery.OrderByDescending(x => x.DateAdded).ThenBy(x => x.Score).Include("Editor").Include("Review").Include("Category").Skip(pageCount * 20).Take(20).ToList();
+                            break;
+                        case "Newer":
+                            listBook = bookQuery.OrderByDescending(x => x.DateAdded).Include("Editor").Include("Review").Include("Category").Skip(pageCount * 20).Take(20).ToList();
+                            break;
+                        case "Popular":
+                            listBook = bookQuery.OrderByDescending(x => x.DateAdded).ThenBy(x => x.TimesConsulted).Include("Editor").Include("Review").Include("Category").Skip(pageCount * 20).Take(20).ToList();
+                            break;
+                    }
+                    break;
+                case "Viral":
+                    switch (secondOption)
+                    {
+                        case "Score":
+                            listBook = bookQuery.OrderByDescending(x => x.Score).Include("Editor").Include("Review").Include("Category").Skip(pageCount * 20).Take(20).ToList();
+                            break;
+                        case "Newer":
+                            listBook = bookQuery.OrderByDescending(x => x.Score).ThenBy(x => x.DateAdded).Include("Editor").Include("Review").Include("Category").Skip(pageCount * 20).Take(20).ToList();
+                            break;
+                        case "Popular":
+                            listBook = bookQuery.OrderByDescending(x => x.Score).ThenBy(x => x.TimesConsulted).Include("Editor").Include("Review").Include("Category").Skip(pageCount * 20).Take(20).ToList();
+                            break;
+                    }
+                    break;
+            }
+
+            (this).Dispose();
+
+            return listBook;
+        }
+
+        public bool HasDisposed()
+        {
+            return Disposed;
+        }
+
+        public List<Book> ListRandomBooks(int pageNumber)
+        {
+            Random random = new Random();
+
+            var Book = from b in Context.Book
+                        select b;
+
+            int totalCount = Book.Count();
+
+            List<Book> listToReturn = new List<Book>();
+
+            while (listToReturn.Count < 20)
+            {
+                int randomNumber = random.Next(1, totalCount);
+
+                if (listToReturn.All(item => item.BookID != randomNumber))
+                {
+                    Book bookToAdd = Context.Book.Find(randomNumber);
+
+                    listToReturn.Add(bookToAdd);
+                }
+            }
+
+            return listToReturn;
+        }
+
+        public Book GetBookById(int bookId, bool hasDisposed)
+        {
+            Book bookToReturn = Context.Book.Include("Editor").Include("Review").Include("Review.Comment").Include("Category").FirstOrDefault(item => item.BookID == bookId);
+
+            if (bookToReturn == null)
+            {
+                return null;
+            }
+
+            if (!hasDisposed)
+            {
+                bookToReturn.TimesConsulted++;
+
+                bookToReturn.Editor.TimeEditorConsulted++;
+
+                bookToReturn.Category.TimesCategoryConsulted++;
+            }
+            
+            Save();
+
+            return bookToReturn;
+        }
+
+        public BookByUser GetRelationshipForBook(UserAccount userToShow, Book bookToShow)
+        {
+            IQueryable<BookByUser> bookRelationShip = from br in Context.BookByUser
+                where br.BookID == bookToShow.BookID
+                where br.UserAccountID == userToShow.AccountID
+                select br;
+
+            BookByUser bookRel;
+
+            if (!bookRelationShip.Any())
+            {
+                bookRel = new BookByUser
+                {
+                    BookID = bookToShow.BookID,
+                    UserAccountID = userToShow.AccountID,
+                    DateCreated = DateTime.Now,
+                    DateModified = DateTime.Now,
+                };
+
+                Context.BookByUser.Add(bookRel);
+            }
+            else
+            {
+                bookRel = bookRelationShip.First();
+            }
+
+            Dispose(true);
+
+            return bookRel;
+        }
+
+        public bool CheckIfBookPresent(BookModel bookToCheck)
+        {
+            IQueryable<Book> Book = from bo in Context.Book
+                        where bo.BookName == bookToCheck.BookName
+                        select bo;
+
+            if (!Book.Any())
+            {
+                return false;
+            }
+
+            if (bookToCheck.Year == null || bookToCheck.PageNumber == null)
+            {
+                return Enumerable.Any(Book, book => book.Editor.EditorName == bookToCheck.EditorName && 
+                    book.PrimaryAuthor == bookToCheck.Author1 && 
+                    book.SecondAuthor == bookToCheck.Author2 && 
+                    book.ThirdAuthor == bookToCheck.Author3);
+            }
+
+            return Enumerable.Any(Book
+                                      .Where(book => book.Editor.EditorName == bookToCheck.EditorName)
+                                      .Where(book => book.PublishedYear != null && book.PageNumber != null), 
+                                  book => book.PublishedYear == int.Parse(bookToCheck.Year) && 
+                                          book.PageNumber == int.Parse(bookToCheck.PageNumber));
+        }
+
+        public bool CheckIfBookPresent(Book bookToCheck)
+        {
+            IQueryable<Book> bookQuery = from book in Context.Book
+                                        where book.BookName == bookToCheck.BookName
+                                        where book.EditorID == bookToCheck.EditorID
+                                        where book.PrimaryAuthor == bookToCheck.PrimaryAuthor
+                                        where book.SecondAuthor == bookToCheck.SecondAuthor
+                                        where book.ThirdAuthor == bookToCheck.ThirdAuthor
+                                        where book.BookISBN == bookToCheck.BookISBN
+                                        where book.PublishedYear == bookToCheck.PublishedYear
+                                        where book.PageNumber == bookToCheck.PageNumber
+                                        select book;
+
+            return bookQuery.Any();
+        }
+
+        public void Save() 
+        {
+            try
+            {
+                Context.SaveChanges();
+            }
+            catch (DbEntityValidationException dbEx)
+            {
+                foreach (var dbValidationError in dbEx.EntityValidationErrors.
+                    SelectMany(_dbEntityValidationResult => _dbEntityValidationResult.ValidationErrors))
+                {
+                    Trace.TraceInformation("Property: {0} Error: {1}", dbValidationError.PropertyName, dbValidationError.ErrorMessage);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            
+        }
+
+        public UserActionResult UpdateBookStatus(int bookID, string buttonId, string userName)
+        {
+            UserActionResult result = new UserActionResult();
+
+            UserAccount user = Context.UserAccount.First(item => item.AccountName == userName);
+
+            Book concernedBook = Context.Book.First(item => item.BookID == bookID);
+
+            BookByUser bookRelationship = Context.BookByUser.FirstOrDefault(item =>
+                                                                   item.UserAccountID == user.AccountID &&
+                                                                   item.BookID == bookID);
+
+            EnumLibrary.BookRelationshipEnum value;
+
+            switch (buttonId)
+            {
+                case "upvote":
+                    value = EnumLibrary.BookRelationshipEnum.Liked;
+                    break;
+                case "downvote":
+                    value = EnumLibrary.BookRelationshipEnum.Unliked;
+                    break;
+                default:
+                    value = EnumLibrary.BookRelationshipEnum.Liked;
+                    break;
+            }
+
+            if (bookRelationship != null)
+            {
+                switch (bookRelationship.LikeState)
+                {
+                    case (int)EnumLibrary.BookRelationshipEnum.Liked:
+                        if (value == EnumLibrary.BookRelationshipEnum.Liked)
+                        {
+                            bookRelationship.LikeState = null;
+                            result.StatusValue = (int) EnumLibrary.ActionStatus.Nulled;
+                        }
+                        else
+                        {
+                            bookRelationship.LikeState = (int) EnumLibrary.BookRelationshipEnum.Unliked;
+                            result.StatusValue = (int)EnumLibrary.ActionStatus.Unliked;
+                        }
+                        break;
+                    case null:
+                        if (value == EnumLibrary.BookRelationshipEnum.Liked)
+                        {
+                            bookRelationship.LikeState = (int)EnumLibrary.BookRelationshipEnum.Liked;
+                            result.StatusValue = (int)EnumLibrary.ActionStatus.Liked;
+                        }
+                        else
+                        {
+                            bookRelationship.LikeState = (int)EnumLibrary.BookRelationshipEnum.Unliked;
+                            result.StatusValue = (int)EnumLibrary.ActionStatus.Unliked;
+                        }
+                        break;
+                    case (int)EnumLibrary.BookRelationshipEnum.Unliked:
+                        if (value == EnumLibrary.BookRelationshipEnum.Liked)
+                        {
+                            bookRelationship.LikeState = (int)EnumLibrary.BookRelationshipEnum.Liked;
+                            result.StatusValue = (int)EnumLibrary.ActionStatus.Liked;
+                        }
+                        else
+                        {
+                            bookRelationship.LikeState = null;
+                            result.StatusValue = (int)EnumLibrary.ActionStatus.Nulled;
+                        }
+                        break;
+                }
+
+                Context.Entry(bookRelationship).State = EntityState.Modified;
+
+                Save();
+            }
+            else
+            {
+                bookRelationship = new BookByUser
+                    {
+                        BookID = bookID,
+                        Book = concernedBook,
+                        LikeState = (int) value,
+                        DateCreated = DateTime.Now,
+                        UserAccountID = user.AccountID,
+                        UserAccount = user,
+                    };
+
+                Context.BookByUser.Add(bookRelationship);
+
+                Save();
+            }
+
+            UpdateBookPoints(bookID);
+
+            result.ResultMessage = String.Empty;
+
+            return result;
+        }
+
+        private void UpdateBookPoints(int bookID)
+        {
+            Book bookToUpdate = Context.Book.First(item => item.BookID == bookID);
+
+            bookToUpdate.Score = (Context.BookByUser.Count(item => 
+                                                item.BookID == bookID && 
+                                                item.LikeState == (int)EnumLibrary.BookRelationshipEnum.Liked) - 
+                                  Context.BookByUser.Count(item => 
+                                                item.BookID == bookID &&
+                                                item.LikeState == (int)EnumLibrary.BookRelationshipEnum.Unliked));
+
+            Context.Entry(bookToUpdate).State = EntityState.Modified;
+
+            Save();
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!this.Disposed)
+            {
+                if (disposing)
+                {
+                    Context.Dispose();
+                }
+            }
+            
+            this.Disposed = true;
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+    }
+}

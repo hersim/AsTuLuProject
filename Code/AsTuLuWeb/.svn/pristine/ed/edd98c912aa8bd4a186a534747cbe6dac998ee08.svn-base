@@ -1,0 +1,56 @@
+﻿using System;
+using System.Linq;
+using AsTuLuWebProject.Database;
+
+namespace AsTuLuWebProject.Models.Interfaces.DAL
+{
+    public class UserRepository: IUserRepository
+    {
+        private readonly AsTuLusEntities DbContext;
+
+        private bool Disposed;
+
+        public UserRepository(AsTuLusEntities context)
+        {
+            DbContext = context;
+        }
+
+        public UserAccount GetUser(int userID)
+        {
+            UserAccount userToReturn = DbContext.UserAccount.FirstOrDefault(item => item.AccountID == userID);
+
+            return userToReturn;
+        }
+
+        public UserAccount GetUserByName(string userName)
+        {
+            UserAccount userToReturn = DbContext.UserAccount.FirstOrDefault(item => item.UserAccountName == userName);
+
+            return userToReturn;
+        }
+
+        public void CreateUser(string userName)
+        {
+            
+        }
+
+        protected virtual void Dispose(bool _disposing)
+        {
+            if (!this.Disposed)
+            {
+                if (_disposing)
+                {
+                    DbContext.Dispose();
+                }
+
+                this.Disposed = true;
+            }
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+    }
+}

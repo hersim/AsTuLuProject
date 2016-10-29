@@ -1,0 +1,97 @@
+﻿@using AsTuLuWebProject.Utilities.Enums
+@model List<AsTuLuWebProject.Models.ViewModels.BookDisplay>
+
+<div class="bookView">
+    <table style="width: 100%">
+        <tr>
+            <th></th>
+            <th>Nom</th>
+            <th>Catégorie</th>
+            <th>Auteur(s)</th>
+            <th>Ajout</th>
+            <th>Score</th>
+            <th>Edition(s)</th>
+        </tr>
+        @for (int i = 0; i < Model.Count; i++)
+        {
+            var classname = i%2 == 0 ? "even" : "odd";
+            
+            string likeStatus;
+
+            switch (Model[i].LikeState)
+            {
+                case null:
+                    likeStatus = "neutral";
+                    break;
+                case (int)EnumLibrary.BookRelationshipEnum.Liked:
+                    likeStatus = "like";
+                    break;
+                case (int)EnumLibrary.BookRelationshipEnum.Unliked:
+                    likeStatus = "unlike";
+                    break;
+                default:
+                    likeStatus = "neutral";
+                    break;
+            }
+
+            <tr class="@classname @likeStatus bookWorm">
+                <td></td>
+                <td>
+                    @Html.DisplayFor(x => x[i].BookName)
+                </td>
+                <td>
+                    @if (!String.IsNullOrEmpty(Model[i].BookCategory))
+                    {
+                        <div>
+                            <div style="font-weight: bold">
+                                @Model[i].BookCategory
+                            </div>
+                            @if (Model[i].ListSubCats.Count > 0)
+                            {
+                                foreach (string subCat in Model[i].ListSubCats)
+                                {
+                                    <div>@subCat</div>
+                                }
+                            }
+                        </div>
+                    }
+                </td>
+                <td>
+                    @if (Model[i].ListAuthors.Count > 0)
+                    {
+                        foreach (string auth in Model[i].ListAuthors)
+                        {
+                            <div style="font-weight: bold">@auth</div>
+                        }    
+                    }
+                    
+                </td>
+                <td>
+                    @Model[i].DateAdded.ToShortDateString()
+                </td>
+                <td>
+                    @if (Model[i].Score < 0)
+                    {
+                        <span style="color: red">@Html.DisplayFor(item => item[i].Score)</span>
+                    }
+                    else
+                    {
+                        @Html.DisplayFor(item => item[i].Score)
+                    }
+                </td>
+                <td>
+                    @if (Model[i].ListEditors.Count > 0)
+                    {
+                        foreach (string edit in Model[i].ListEditors)
+                        {
+                            <div>
+                                @edit
+                            </div>    
+                        }
+                        
+                    }
+                </td>
+            </tr>
+        }
+    </table>
+</div>

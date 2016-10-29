@@ -1,0 +1,16 @@
+﻿using System;
+using System.Collections.Generic;
+
+namespace AsTuLuWebProject.Models
+{
+    public class EditorModel
+    {
+        public int EditorID { get; set; }
+
+        public string Name { get; set; }
+
+        public DateTime? DateCreated { get; set; }
+
+        public List<BookModel> ListBooks { get; set; }
+    }
+}

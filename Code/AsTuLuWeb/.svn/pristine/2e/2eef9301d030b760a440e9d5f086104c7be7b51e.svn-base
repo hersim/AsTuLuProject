@@ -1,0 +1,33 @@
+﻿@model List<AsTuLuWebProject.Models.ViewModels.BookDisplay>
+
+<div class="bookView">
+    @for (int i = 0; i < Model.Count; i++)
+    {
+        <div class="bookUnit">
+            @Html.ActionLink(" ", "BookDetails", "Book", new { @bookID = Model[i].DisplayBook.BookID}, new { @class = "linkspan"})
+            <div class="bookTitle" data-id="@Model[i].DisplayBook.BookID">
+                @Html.DisplayFor(item => item[i].DisplayBook.Book.BookName) 
+            </div>    
+            <div class="bookDetail">
+                <div class="bookCategory">
+                    @*@Html.DisplayFor(item =>item[i].Category.CategoryName)*@
+                </div>
+                <div class="bookEditor">
+                    @*@Html.DisplayFor(item => item[i].Editor.EditorName)*@
+                </div>
+                <div class="bookDate">
+                    @Model[i].DisplayBook.Book.DateAdded.ToShortDateString()
+                </div>
+            </div>
+            <div class="bookScore">
+                <div>
+                    Score: @Html.DisplayFor(item => item[i].DisplayBook.Book.Score)    
+                </div>
+                <div>
+                    Consulté: @Html.DisplayFor(item => item[i].DisplayBook.Book.TimesConsulted) fois    
+                </div>
+            </div>
+            <div class="clear"></div>
+        </div>
+    }
+</div>

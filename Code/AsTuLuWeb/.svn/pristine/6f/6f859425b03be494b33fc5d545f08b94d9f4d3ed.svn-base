@@ -1,0 +1,109 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Data.Entity.Validation;
+using System.Diagnostics;
+using System.Linq;
+using AsTuLuWebProject.Database;
+
+namespace AsTuLuWebProject.Models.Interfaces.DAL
+{
+    public class CategoryRepository : ICategoryRepository
+    {
+        private readonly AsTuLusEntities DbContext;
+
+        private bool Disposed;
+
+        public CategoryRepository(AsTuLusEntities context)
+        {
+            this.DbContext = context;
+        }
+
+        public List<Category> ListCategories()
+        {
+            return DbContext.Category.ToList();
+        }
+
+        public Category GetCategoryByID(int categoryID)
+        {
+            return DbContext.Category.Find(categoryID);
+        }
+
+        public Category GetCategoryByNameAndSubtype(string categoryName, string subType)
+        {
+            List<Category> Category = DbContext.Category.Where(item => item.CategoryName == categoryName).ToList();
+
+            if (Category.Count == 0)
+            {
+                return null;
+            }
+
+            if (!String.IsNullOrWhiteSpace(subType))
+            {
+                return Category.FirstOrDefault(item => item.SubCategory.Any(_sub => _sub.SubCategoryName.Contains(subType)));    
+            }
+            else
+            {
+                return Category.FirstOrDefault(item => item.CategoryName == categoryName);
+            }
+        }
+
+        public void AddCategory(Category category)
+        {
+            DbContext.Category.Add(category);
+
+            DbContext.Entry(category).State = System.Data.EntityState.Added;
+        }
+
+        public void DeleteCategory(int categoryID)
+        {
+            Category categoryToDelete = DbContext.Category.Find(categoryID);
+
+            DbContext.Category.Remove(categoryToDelete);
+
+            DbContext.Entry(categoryToDelete).State = System.Data.EntityState.Deleted;
+        }
+
+        public void UpdateCategory(Category category)
+        {
+            DbContext.Entry(category).State = System.Data.EntityState.Modified;
+        }
+
+        public void Save()
+        {
+            try
+            {
+                DbContext.SaveChanges();
+            }
+            catch (DbEntityValidationException dbEx)
+            {
+                foreach (var dbValidationError in dbEx.EntityValidationErrors.
+                    SelectMany(dbEntityValidationResult => dbEntityValidationResult.ValidationErrors))
+                {
+                    Trace.TraceInformation("Property: {0} Error: {1}", dbValidationError.PropertyName, dbValidationError.ErrorMessage);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!this.Disposed)
+            {
+                if (disposing)
+                {
+                    DbContext.Dispose();
+                }
+            }
+            this.Disposed = true;
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+    }
+}

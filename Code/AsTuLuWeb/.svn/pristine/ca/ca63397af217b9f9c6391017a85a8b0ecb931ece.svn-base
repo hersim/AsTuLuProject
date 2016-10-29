@@ -1,0 +1,77 @@
+﻿using System;
+using AsTuLuWebProject.Database;
+
+namespace AsTuLuWebProject.Models.ViewModels
+{
+    public class BookDisplay
+    {
+        #region BookProperties
+        
+        public int BookID { get; set; }
+        public int? LikeState { get; set; }
+        public DateTime DateCreated { get; set; }
+        public DateTime? DateModified { get; set; }
+        public string BookName { get; set; }
+        public int? BookNumber { get; set; }
+        public string BookCollection { get; set; }
+        public string BookSerie { get; set; }
+        public int BookLanguage { get; set; }
+        public int PageNumber { get; set; }
+        public int? PublishedYear { get; set; }
+        public DateTime DateAdded { get; set; }
+        public int Score { get; set; }
+        public int TimesConsulted { get; set; }
+        public bool? IsTranslated { get; set; }
+        public int BookStatus { get; set; }
+        public int ReviewCount { get; set; }
+
+        #endregion
+        public int UserID { get; set; }
+        
+
+        public BookDisplay()
+        {
+            
+        }
+
+        public BookDisplay(Book databook)
+        {
+            BookID = databook.BookID;
+            DateAdded = databook.DateAdded;
+            BookName = databook.BookName;
+            BookNumber = databook.BookNumber;
+            BookCollection = databook.BookCollection;
+            BookSerie = databook.BookSerie;
+            BookLanguage = databook.BookLanguage;
+            PageNumber = databook.PageNumber;
+            PublishedYear = databook.PublishedYear;
+            Score = databook.Score;
+            TimesConsulted = databook.TimesConsulted;
+            IsTranslated = databook.IsTranslated;
+            BookStatus = databook.BookStatus;
+            ReviewCount = databook.Review.Count;
+        }
+
+        public BookDisplay(BookByUser dataBook)
+        {
+            BookID = dataBook.BookID;
+            DateAdded = dataBook.Book.DateAdded;
+            BookName = dataBook.Book.BookName;
+            BookNumber = dataBook.Book.BookNumber;
+            BookCollection = dataBook.Book.BookCollection;
+            BookSerie = dataBook.Book.BookSerie;
+            BookLanguage = dataBook.Book.BookLanguage;
+            PageNumber = dataBook.Book.PageNumber;
+            PublishedYear = dataBook.Book.PublishedYear;
+            Score = dataBook.Book.Score;
+            TimesConsulted = dataBook.Book.TimesConsulted;
+            IsTranslated = dataBook.Book.IsTranslated;
+            BookStatus = dataBook.Book.BookStatus;
+            ReviewCount = dataBook.Book.Review.Count;
+            LikeState = dataBook.LikeState;
+            DateCreated = dataBook.DateCreated;
+            DateModified = dataBook.DateModified;
+            UserID = dataBook.UserID;
+        }
+    }
+}

@@ -1,0 +1,21 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using AsTuLuWebProject.Database;
+
+namespace AsTuLuWebProject.Models
+{
+    public class AuthorModel
+    {
+        public AuthorModel()
+        {
+            
+        }
+
+        public AuthorModel(Author dataAut)
+        {
+            
+        }
+    }
+}

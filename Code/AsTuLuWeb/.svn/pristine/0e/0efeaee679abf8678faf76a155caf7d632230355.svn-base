@@ -1,0 +1,8 @@
+﻿@{
+    ViewBag.Title = "Erreur de connection";
+}
+
+<hgroup class="title">
+    <h1>@ViewBag.Title.</h1>
+    <h2>Tentative de connection ratée.</h2>
+</hgroup>

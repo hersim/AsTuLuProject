@@ -1,0 +1,71 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>AsTuLu.com - Votre référence pour les livres!</title>
+        <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+        <meta name="viewport" content="width=device-width" />
+        @Styles.Render("~/Content/css")
+        @Scripts.Render("~/bundles/modernizr")
+        @Scripts.Render("~/bundles/jquery")
+        @Scripts.Render("~/bundles/jqueryui")
+        @Scripts.Render("~/bundles/jsBundles")
+    </head>
+    <body>
+        <header>
+            <div class="content-wrapper">
+                <div class="float-left">
+                    <p class="site-title">@Html.ActionLink("AsTuLu.Com", "Index", "Home")</p>
+                </div>
+                <div class="float-right">
+                    <section id="login">
+                        @Html.Partial("_LoginPartial")
+                    </section>
+                    <nav>
+                        <ul id="menu">
+                            <li>@Html.ActionLink("Accueil", "Index", "Home")</li>
+                            <li>@Html.ActionLink("À propos", "About", "Home")</li>
+                            <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+                            @if (Request.IsAuthenticated)
+                            {
+                                if (User.IsInRole("Admin"))
+                                {
+                                    <li>@Html.ActionLink("Read Excel File", "ReadExcelFile", "Data")</li>         
+                                }
+                            }
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </header>
+        <div id="body">
+            @RenderSection("featured", required: false)
+            <section class="content-wrapper main-content clear-fix">
+                <div id="layer"></div>
+                <div id="spinner">
+                    Loading...
+                </div> 
+                @using (Html.BeginForm())
+                {
+                    <div id="zonePubOne">
+                        Votre annonce pourrait être affichée ici!
+                    </div>    
+                }
+                <div id="update-message" class="float-right"></div>
+                @RenderBody()
+                </section>
+            <div class="clear"></div>
+        </div>
+        
+        <footer>
+            <div class="content-wrapper">
+                <div class="float-left">
+                    <p>&copy; @DateTime.Now.Year - My ASP.NET MVC Application</p>
+                </div>
+            </div>
+        </footer>
+
+        @Scripts.Render("~/bundles/jquery")
+        @RenderSection("scripts", required: false)
+    </body>
+</html>

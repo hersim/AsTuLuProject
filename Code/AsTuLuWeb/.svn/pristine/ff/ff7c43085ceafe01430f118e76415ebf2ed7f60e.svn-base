@@ -1,0 +1,196 @@
+﻿@using AsTuLuWebProject.Utilities.Enums
+@model AsTuLuWebProject.Utilities.Containers.BookContainer
+
+@{
+    ViewBag.Title = Model.BookToShow.BookName;
+}
+
+<div id="bookDetail" class="blackborder">
+    @Html.HiddenFor(item => item.BookToShow.BookID, new {@id = "bookID"} )
+    <div>
+        <h2 class="float-left">
+            @if (!String.IsNullOrEmpty(Model.BookToShow.BookSerie))
+            {
+                <span>@Model.BookToShow.BookSerie - </span>
+            }    @Html.DisplayFor(item => item.BookToShow.BookName)
+        </h2>
+        @if (Model.BookToShow.BookNumber != null)
+        {
+            <div class="float-right">
+                # : @Html.DisplayFor(item => item.BookToShow.BookNumber)
+            </div>
+        }    
+    </div>
+    <div class="clear"></div>
+    <div>
+        @if (Model.ListAuthors != null )
+        {
+            if (Model.ListAuthors.Any())
+            {
+                <div class="float-left">
+                    @for (int i = 0; i < Model.ListAuthors.Count; i++)
+                    {
+                        <div>
+                            Par: @Html.ActionLink(Model.ListAuthors[i].AuthorName, "ListByAuthor", "Book", new { @authorName = Model.ListAuthors[i].AuthorName}, null)
+                            @Html.ActionLink("Autres livres de cet auteur", "ListByAuthor", "Book", new { @authorName = Model.ListAuthors[i].AuthorName}, null)
+                        </div>
+                    }
+                </div>
+            }
+        }
+        @if (Model.ListEditors != null)
+        {
+            if (Model.ListEditors.Count > 0)
+            {
+                <div class="float-right">
+                    @for (int i = 0; i < Model.ListEditors.Count; i++)
+                    {
+                        <div>
+                            @Html.ActionLink(Model.ListEditors[i].Name, "ListByEditor", "Book", new { @editorid = Model.ListEditors[i].EditorID}, null)
+                            @Html.ActionLink("Oeuvres de cette maison d'éditions", "ListByAuthor", "Book", new { @editorid = Model.ListEditors[i].EditorID}, null)
+                        </div>
+                    }
+                </div>
+            }
+        }
+        <div class="clear"></div>
+    </div>
+    
+    @if (!String.IsNullOrEmpty(Model.BookToShow.BookCollection))
+    {
+        <div class="blackborder">
+            Collection @Html.DisplayFor(item => item.BookToShow.BookCollection)
+        </div>
+    }
+    <div>
+        @switch (Model.BookToShow.BookLanguage)
+        {
+            case 1:
+                <span>Français - </span>
+                break;
+            case 2:
+                <span>Anglais - </span>
+                break;
+        }
+        @if (Model.BookToShow.IsTranslated != null)
+        {
+            if ((bool)Model.BookToShow.IsTranslated)
+            {
+                <span>
+                    Traduit
+                </span>
+            }
+        }
+        @if (Model.BookToShow.PublishedYear != null)
+        {
+            @Html.DisplayFor(item => item.BookToShow.PublishedYear)
+        }
+    </div>
+    <div>
+        <div>
+            Nombre de pages: @Html.DisplayFor(item => item.BookToShow.PageNumber)
+        </div>
+    </div>
+    <div id="bookData">
+        <div class="float-left">
+            Ajouté le: @Model.BookToShow.DateAdded.ToShortDateString()
+        </div>
+        <div class="float-left">
+            Score: <span id="scoreZone">@Model.BookToShow.Score</span>
+        </div>
+        <div class="float-right">
+            <div id="buttonState">
+                @if (Model.BookRelationship.LikeState != null)
+                {
+                    switch (Model.BookRelationship.LikeState)
+                    {
+                        case (int)EnumLibrary.BookRelationshipEnum.Liked:
+                            <span style="height: 40px">
+                                <a href="javascript:void(0);" id="upvote" class="voteButton">
+                                    <img style="border: solid 3px greenyellow" id="upvoteImg" src="~/Content/upvotePlace.png" alt="upvote" title="J'aime!"/>
+                                </a>    
+                            </span>
+                            <span style="height: 40px">
+                                <a href="javascript:void(0);" id="downvote" class="voteButton">
+                                    <img style="border:solid 3px transparent" id="downvoteImg" src="~/Content/downvote.png" alt="downvote" title="J'aime pas!"/>
+                                </a>    
+                            </span>
+                            break;
+                        case (int)EnumLibrary.BookRelationshipEnum.Unliked:
+                            <span style="height: 40px">
+                                <a href="javascript:void(0);" id="upvote" class="voteButton">
+                                    <img style="border: solid 3px transparent" id="upvoteImg" src="~/Content/upvotePlace.png" alt="upvote" title="J'aime!"/>
+                                </a>    
+                            </span>
+                            <span style="height: 40px">
+                                <a href="javascript:void(0);" id="downvote" class="voteButton">
+                                    <img style="border: solid 3px darkred" id="downvoteImg" src="~/Content/downvote.png" alt="downvote" title="J'aime pas!"/>
+                                </a>                
+                            </span>
+                            break;
+                    }
+                }
+                else
+                {
+                    <span style="height: 40px">
+                        <a href="javascript:void(0);" id="upvote" class="voteButton">
+                            <img style="border: solid 3px transparent" id="upvoteImg" src="~/Content/upvotePlace.png" alt="upvote" title="J'aime!"/>
+                        </a>
+                    </span>
+                    <span style="height: 40px">
+                        <a href="javascript:void(0);" id="downvote" class="voteButton">
+                            <img style="border: solid 3px transparent" id="downvoteImg" src="~/Content/downvote.png" alt="downvote" title="J'aime pas!"/>
+                        </a>    
+                    </span>
+                    
+                }
+            </div>
+        </div>
+        <div class="float-right">
+            Consulté : @Html.DisplayFor(item => item.BookToShow.TimesConsulted) fois    
+        </div>
+            
+    </div>
+    <div class="clear"></div>
+    <div class="blackborder">
+        @if (Model.ListCategories != null)
+        {
+        <div style="padding: 5px;">
+            @for (int i = 0; i < Model.ListCategories.Count; i++)
+            {
+                <span>
+                    Catégorie: @Html.ActionLink(Model.ListCategories[i].CategoryName, "ListByCategory", "Book", new {@categoryID = Model.ListCategories[i].CategoryId}, null)
+                    @Html.ActionLink("Plus de cette catégorie", "ListByCategory", "Book", new { @categoryID = Model.ListCategories[i].CategoryId}, null)
+                </span>  
+            }
+        </div>    
+        }
+        
+        @if (!String.IsNullOrEmpty(Model.BookToShow.BookSerie))
+        {
+            @Html.ActionLink("Voir plus de " + Model.BookToShow.BookSerie, "ListBySerie", "Book", new { @_serie = Model.BookToShow.BookSerie }, null)
+        }
+    </div>
+    <div class="clear"></div>
+    <div id="reviewBox">
+        @Html.TextBox("reviewBox", String.Empty, new {@id = "reviewText"})    
+        <button type="button" id="saveButton">Save</button>
+    </div>
+    <div>
+        @if (Model.BookToShow.Review.Count > 0)
+        {
+            <div>
+                @Model.BookToShow.Review.Count 
+            </div>
+        }
+        else
+        {
+            <div>
+                Dites votre avis!
+            </div>
+        }
+    </div>
+    <div id="reviewDisplayZone">
+        @Html.Partial("DisplayReview", Model.BookToShow.Review)
+    </div>
+</div>

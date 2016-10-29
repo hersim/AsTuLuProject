@@ -1,0 +1,873 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="AsTuLusModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityContainer Name="AsTuLusModelStoreContainer">
+          <EntitySet Name="Book" EntityType="AsTuLusModel.Store.Book" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="BookByUser" EntityType="AsTuLusModel.Store.BookByUser" store:Type="Tables" store:Schema="dbo" store:Name="BookByUser">
+            <DefiningQuery>SELECT 
+      [BookByUser].[BookByUserID] AS [BookByUserID], 
+      [BookByUser].[BookID] AS [BookID], 
+      [BookByUser].[UserAccountID] AS [UserAccountID], 
+      [BookByUser].[LikeState] AS [LikeState], 
+      [BookByUser].[DateCreated] AS [DateCreated], 
+      [BookByUser].[DateModified] AS [DateModified]
+      FROM [dbo].[BookByUser] AS [BookByUser]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="Category" EntityType="AsTuLusModel.Store.Category" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Comment" EntityType="AsTuLusModel.Store.Comment" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Editor" EntityType="AsTuLusModel.Store.Editor" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Review" EntityType="AsTuLusModel.Store.Review" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="SubCategory" EntityType="AsTuLusModel.Store.SubCategory" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="UserAccount" EntityType="AsTuLusModel.Store.UserAccount" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="UserProfile" EntityType="AsTuLusModel.Store.UserProfile" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="webpages_Membership" EntityType="AsTuLusModel.Store.webpages_Membership" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="webpages_OAuthMembership" EntityType="AsTuLusModel.Store.webpages_OAuthMembership" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="webpages_Roles" EntityType="AsTuLusModel.Store.webpages_Roles" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="webpages_UsersInRoles" EntityType="AsTuLusModel.Store.webpages_UsersInRoles" store:Type="Tables" Schema="dbo" />
+          <AssociationSet Name="fk_RoleId" Association="AsTuLusModel.Store.fk_RoleId">
+            <End Role="webpages_Roles" EntitySet="webpages_Roles" />
+            <End Role="webpages_UsersInRoles" EntitySet="webpages_UsersInRoles" />
+          </AssociationSet>
+          <AssociationSet Name="fk_UserId" Association="AsTuLusModel.Store.fk_UserId">
+            <End Role="UserProfile" EntitySet="UserProfile" />
+            <End Role="webpages_UsersInRoles" EntitySet="webpages_UsersInRoles" />
+          </AssociationSet>
+          <AssociationSet Name="FKBookCategory" Association="AsTuLusModel.Store.FKBookCategory">
+            <End Role="Category" EntitySet="Category" />
+            <End Role="Book" EntitySet="Book" />
+          </AssociationSet>
+          <AssociationSet Name="FKBookEditor" Association="AsTuLusModel.Store.FKBookEditor">
+            <End Role="Editor" EntitySet="Editor" />
+            <End Role="Book" EntitySet="Book" />
+          </AssociationSet>
+          <AssociationSet Name="FKBookToUser" Association="AsTuLusModel.Store.FKBookToUser">
+            <End Role="Book" EntitySet="Book" />
+            <End Role="BookByUser" EntitySet="BookByUser" />
+          </AssociationSet>
+          <AssociationSet Name="FKCommentReview" Association="AsTuLusModel.Store.FKCommentReview">
+            <End Role="Review" EntitySet="Review" />
+            <End Role="Comment" EntitySet="Comment" />
+          </AssociationSet>
+          <AssociationSet Name="FKCommentUser" Association="AsTuLusModel.Store.FKCommentUser">
+            <End Role="UserAccount" EntitySet="UserAccount" />
+            <End Role="Comment" EntitySet="Comment" />
+          </AssociationSet>
+          <AssociationSet Name="FKReviewBook" Association="AsTuLusModel.Store.FKReviewBook">
+            <End Role="Book" EntitySet="Book" />
+            <End Role="Review" EntitySet="Review" />
+          </AssociationSet>
+          <AssociationSet Name="FKReviewUser" Association="AsTuLusModel.Store.FKReviewUser">
+            <End Role="UserAccount" EntitySet="UserAccount" />
+            <End Role="Review" EntitySet="Review" />
+          </AssociationSet>
+          <AssociationSet Name="FKSubCategoryCategory" Association="AsTuLusModel.Store.FKSubCategoryCategory">
+            <End Role="Category" EntitySet="Category" />
+            <End Role="SubCategory" EntitySet="SubCategory" />
+          </AssociationSet>
+          <AssociationSet Name="FKUserToBook" Association="AsTuLusModel.Store.FKUserToBook">
+            <End Role="UserAccount" EntitySet="UserAccount" />
+            <End Role="BookByUser" EntitySet="BookByUser" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Book">
+          <Key>
+            <PropertyRef Name="BookID" />
+          </Key>
+          <Property Name="BookID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="BookName" Type="varchar" Nullable="false" MaxLength="200" />
+          <Property Name="PrimaryAuthor" Type="varchar" Nullable="false" MaxLength="150" />
+          <Property Name="SecondAuthor" Type="varchar" MaxLength="150" />
+          <Property Name="ThirdAuthor" Type="varchar" MaxLength="150" />
+          <Property Name="BookISBN" Type="varchar" MaxLength="70" />
+          <Property Name="BookNumber" Type="int" />
+          <Property Name="BookCollection" Type="varchar" MaxLength="100" />
+          <Property Name="BookSerie" Type="varchar" MaxLength="100" />
+          <Property Name="BookLanguage" Type="int" Nullable="false" />
+          <Property Name="PageNumber" Type="int" Nullable="false" />
+          <Property Name="PublishedYear" Type="int" />
+          <Property Name="DateAdded" Type="date" Nullable="false" />
+          <Property Name="Score" Type="int" Nullable="false" />
+          <Property Name="CategoryID" Type="int" Nullable="false" />
+          <Property Name="EditorID" Type="int" Nullable="false" />
+          <Property Name="TimesConsulted" Type="int" Nullable="false" />
+          <Property Name="IsTranslated" Type="bit" />
+          <Property Name="BookStatus" Type="int" Nullable="false" />
+          <Property Name="UserID" Type="int" />
+        </EntityType>
+        <!--Errors Found During Generation:
+      warning 6002: The table/view 'AsTuLus.dbo.BookByUser' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+      -->
+        <EntityType Name="BookByUser">
+          <Key>
+            <PropertyRef Name="BookByUserID" />
+            <PropertyRef Name="BookID" />
+            <PropertyRef Name="UserAccountID" />
+            <PropertyRef Name="DateCreated" />
+          </Key>
+          <Property Name="BookByUserID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="BookID" Type="int" Nullable="false" />
+          <Property Name="UserAccountID" Type="int" Nullable="false" />
+          <Property Name="LikeState" Type="int" />
+          <Property Name="DateCreated" Type="date" Nullable="false" />
+          <Property Name="DateModified" Type="date" />
+        </EntityType>
+        <EntityType Name="Category">
+          <Key>
+            <PropertyRef Name="CategoryID" />
+          </Key>
+          <Property Name="CategoryID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="CategoryName" Type="varchar" Nullable="false" MaxLength="100" />
+          <Property Name="TimesCategoryConsulted" Type="int" Nullable="false" />
+          <Property Name="DateAdded" Type="date" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Comment">
+          <Key>
+            <PropertyRef Name="CommentID" />
+          </Key>
+          <Property Name="CommentID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="CommentText" Type="varchar" Nullable="false" MaxLength="140" />
+          <Property Name="AccountID" Type="int" Nullable="false" />
+          <Property Name="ReviewID" Type="int" Nullable="false" />
+          <Property Name="DateAdded" Type="date" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Editor">
+          <Key>
+            <PropertyRef Name="EditorID" />
+          </Key>
+          <Property Name="EditorID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="EditorName" Type="varchar" Nullable="false" MaxLength="200" />
+          <Property Name="DateCreated" Type="datetime" />
+          <Property Name="EditorScore" Type="int" Nullable="false" />
+          <Property Name="DateAdded" Type="date" Nullable="false" />
+          <Property Name="TimeEditorConsulted" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Review">
+          <Key>
+            <PropertyRef Name="ReviewID" />
+          </Key>
+          <Property Name="ReviewID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="ReviewText" Type="varchar" Nullable="false" MaxLength="300" />
+          <Property Name="AccountID" Type="int" Nullable="false" />
+          <Property Name="BookID" Type="int" Nullable="false" />
+          <Property Name="ReviewScore" Type="int" Nullable="false" />
+          <Property Name="DateAdded" Type="date" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SubCategory">
+          <Key>
+            <PropertyRef Name="SubCategoryID" />
+          </Key>
+          <Property Name="SubCategoryID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="SubCategoryName" Type="varchar" Nullable="false" MaxLength="100" />
+          <Property Name="CategoryID" Type="int" Nullable="false" />
+          <Property Name="TimesSubCatConsulted" Type="int" Nullable="false" />
+          <Property Name="DateAdded" Type="date" Nullable="false" />
+        </EntityType>
+        <EntityType Name="UserAccount">
+          <Key>
+            <PropertyRef Name="AccountID" />
+          </Key>
+          <Property Name="AccountID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="AccountName" Type="varchar" MaxLength="100" />
+          <Property Name="DateCreated" Type="datetime" Nullable="false" />
+          <Property Name="DateLastLog" Type="datetime" />
+          <Property Name="AccountScore" Type="int" Nullable="false" />
+          <Property Name="Reputation" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="UserProfile">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="UserName" Type="nvarchar" Nullable="false" MaxLength="56" />
+        </EntityType>
+        <EntityType Name="webpages_Membership">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="CreateDate" Type="datetime" />
+          <Property Name="ConfirmationToken" Type="nvarchar" MaxLength="128" />
+          <Property Name="IsConfirmed" Type="bit" />
+          <Property Name="LastPasswordFailureDate" Type="datetime" />
+          <Property Name="PasswordFailuresSinceLastSuccess" Type="int" Nullable="false" />
+          <Property Name="Password" Type="nvarchar" Nullable="false" MaxLength="128" />
+          <Property Name="PasswordChangedDate" Type="datetime" />
+          <Property Name="PasswordSalt" Type="nvarchar" Nullable="false" MaxLength="128" />
+          <Property Name="PasswordVerificationToken" Type="nvarchar" MaxLength="128" />
+          <Property Name="PasswordVerificationTokenExpirationDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="webpages_OAuthMembership">
+          <Key>
+            <PropertyRef Name="Provider" />
+            <PropertyRef Name="ProviderUserId" />
+          </Key>
+          <Property Name="Provider" Type="nvarchar" Nullable="false" MaxLength="30" />
+          <Property Name="ProviderUserId" Type="nvarchar" Nullable="false" MaxLength="100" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="webpages_Roles">
+          <Key>
+            <PropertyRef Name="RoleId" />
+          </Key>
+          <Property Name="RoleId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="RoleName" Type="nvarchar" Nullable="false" MaxLength="256" />
+        </EntityType>
+        <EntityType Name="webpages_UsersInRoles">
+          <Key>
+            <PropertyRef Name="UserId" />
+            <PropertyRef Name="RoleId" />
+          </Key>
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="RoleId" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="fk_RoleId">
+          <End Role="webpages_Roles" Type="AsTuLusModel.Store.webpages_Roles" Multiplicity="1" />
+          <End Role="webpages_UsersInRoles" Type="AsTuLusModel.Store.webpages_UsersInRoles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="webpages_Roles">
+              <PropertyRef Name="RoleId" />
+            </Principal>
+            <Dependent Role="webpages_UsersInRoles">
+              <PropertyRef Name="RoleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_UserId">
+          <End Role="UserProfile" Type="AsTuLusModel.Store.UserProfile" Multiplicity="1" />
+          <End Role="webpages_UsersInRoles" Type="AsTuLusModel.Store.webpages_UsersInRoles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserProfile">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="webpages_UsersInRoles">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FKBookCategory">
+          <End Role="Category" Type="AsTuLusModel.Store.Category" Multiplicity="1" />
+          <End Role="Book" Type="AsTuLusModel.Store.Book" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Category">
+              <PropertyRef Name="CategoryID" />
+            </Principal>
+            <Dependent Role="Book">
+              <PropertyRef Name="CategoryID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FKBookEditor">
+          <End Role="Editor" Type="AsTuLusModel.Store.Editor" Multiplicity="1" />
+          <End Role="Book" Type="AsTuLusModel.Store.Book" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Editor">
+              <PropertyRef Name="EditorID" />
+            </Principal>
+            <Dependent Role="Book">
+              <PropertyRef Name="EditorID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FKBookToUser">
+          <End Role="Book" Type="AsTuLusModel.Store.Book" Multiplicity="1" />
+          <End Role="BookByUser" Type="AsTuLusModel.Store.BookByUser" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Book">
+              <PropertyRef Name="BookID" />
+            </Principal>
+            <Dependent Role="BookByUser">
+              <PropertyRef Name="BookID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FKCommentReview">
+          <End Role="Review" Type="AsTuLusModel.Store.Review" Multiplicity="1" />
+          <End Role="Comment" Type="AsTuLusModel.Store.Comment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Review">
+              <PropertyRef Name="ReviewID" />
+            </Principal>
+            <Dependent Role="Comment">
+              <PropertyRef Name="ReviewID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FKCommentUser">
+          <End Role="UserAccount" Type="AsTuLusModel.Store.UserAccount" Multiplicity="1" />
+          <End Role="Comment" Type="AsTuLusModel.Store.Comment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserAccount">
+              <PropertyRef Name="AccountID" />
+            </Principal>
+            <Dependent Role="Comment">
+              <PropertyRef Name="AccountID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FKReviewBook">
+          <End Role="Book" Type="AsTuLusModel.Store.Book" Multiplicity="1" />
+          <End Role="Review" Type="AsTuLusModel.Store.Review" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Book">
+              <PropertyRef Name="BookID" />
+            </Principal>
+            <Dependent Role="Review">
+              <PropertyRef Name="BookID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FKReviewUser">
+          <End Role="UserAccount" Type="AsTuLusModel.Store.UserAccount" Multiplicity="1" />
+          <End Role="Review" Type="AsTuLusModel.Store.Review" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserAccount">
+              <PropertyRef Name="AccountID" />
+            </Principal>
+            <Dependent Role="Review">
+              <PropertyRef Name="AccountID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FKSubCategoryCategory">
+          <End Role="Category" Type="AsTuLusModel.Store.Category" Multiplicity="1" />
+          <End Role="SubCategory" Type="AsTuLusModel.Store.SubCategory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Category">
+              <PropertyRef Name="CategoryID" />
+            </Principal>
+            <Dependent Role="SubCategory">
+              <PropertyRef Name="CategoryID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FKUserToBook">
+          <End Role="UserAccount" Type="AsTuLusModel.Store.UserAccount" Multiplicity="1" />
+          <End Role="BookByUser" Type="AsTuLusModel.Store.BookByUser" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserAccount">
+              <PropertyRef Name="AccountID" />
+            </Principal>
+            <Dependent Role="BookByUser">
+              <PropertyRef Name="UserAccountID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="AsTuLusModel" Alias="Self" p1:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:p1="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="AsTuLusEntities" p1:LazyLoadingEnabled="true">
+          <EntitySet Name="Books" EntityType="AsTuLusModel.Book" />
+          <EntitySet Name="BookByUsers" EntityType="AsTuLusModel.BookByUser" />
+          <EntitySet Name="Categories" EntityType="AsTuLusModel.Category" />
+          <EntitySet Name="Comments" EntityType="AsTuLusModel.Comment" />
+          <EntitySet Name="Editors" EntityType="AsTuLusModel.Editor" />
+          <EntitySet Name="Reviews" EntityType="AsTuLusModel.Review" />
+          <EntitySet Name="SubCategories" EntityType="AsTuLusModel.SubCategory" />
+          <EntitySet Name="UserAccounts" EntityType="AsTuLusModel.UserAccount" />
+          <EntitySet Name="UserProfiles" EntityType="AsTuLusModel.UserProfile" />
+          <EntitySet Name="webpages_Membership" EntityType="AsTuLusModel.webpages_Membership" />
+          <EntitySet Name="webpages_OAuthMembership" EntityType="AsTuLusModel.webpages_OAuthMembership" />
+          <EntitySet Name="webpages_Roles" EntityType="AsTuLusModel.webpages_Roles" />
+          <AssociationSet Name="FKBookCategory" Association="AsTuLusModel.FKBookCategory">
+            <End Role="Category" EntitySet="Categories" />
+            <End Role="Book" EntitySet="Books" />
+          </AssociationSet>
+          <AssociationSet Name="FKBookEditor" Association="AsTuLusModel.FKBookEditor">
+            <End Role="Editor" EntitySet="Editors" />
+            <End Role="Book" EntitySet="Books" />
+          </AssociationSet>
+          <AssociationSet Name="FKBookToUser" Association="AsTuLusModel.FKBookToUser">
+            <End Role="Book" EntitySet="Books" />
+            <End Role="BookByUser" EntitySet="BookByUsers" />
+          </AssociationSet>
+          <AssociationSet Name="FKReviewBook" Association="AsTuLusModel.FKReviewBook">
+            <End Role="Book" EntitySet="Books" />
+            <End Role="Review" EntitySet="Reviews" />
+          </AssociationSet>
+          <AssociationSet Name="FKUserToBook" Association="AsTuLusModel.FKUserToBook">
+            <End Role="UserAccount" EntitySet="UserAccounts" />
+            <End Role="BookByUser" EntitySet="BookByUsers" />
+          </AssociationSet>
+          <AssociationSet Name="FKSubCategoryCategory" Association="AsTuLusModel.FKSubCategoryCategory">
+            <End Role="Category" EntitySet="Categories" />
+            <End Role="SubCategory" EntitySet="SubCategories" />
+          </AssociationSet>
+          <AssociationSet Name="FKCommentReview" Association="AsTuLusModel.FKCommentReview">
+            <End Role="Review" EntitySet="Reviews" />
+            <End Role="Comment" EntitySet="Comments" />
+          </AssociationSet>
+          <AssociationSet Name="FKCommentUser" Association="AsTuLusModel.FKCommentUser">
+            <End Role="UserAccount" EntitySet="UserAccounts" />
+            <End Role="Comment" EntitySet="Comments" />
+          </AssociationSet>
+          <AssociationSet Name="FKReviewUser" Association="AsTuLusModel.FKReviewUser">
+            <End Role="UserAccount" EntitySet="UserAccounts" />
+            <End Role="Review" EntitySet="Reviews" />
+          </AssociationSet>
+          <AssociationSet Name="webpages_UsersInRoles" Association="AsTuLusModel.webpages_UsersInRoles">
+            <End Role="webpages_Roles" EntitySet="webpages_Roles" />
+            <End Role="UserProfile" EntitySet="UserProfiles" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Book">
+          <Key>
+            <PropertyRef Name="BookID" />
+          </Key>
+          <Property Type="Int32" Name="BookID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="BookName" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="PrimaryAuthor" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="SecondAuthor" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="ThirdAuthor" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="BookISBN" MaxLength="70" FixedLength="false" Unicode="false" />
+          <Property Type="Int32" Name="BookNumber" />
+          <Property Type="String" Name="BookCollection" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="BookSerie" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="Int32" Name="BookLanguage" Nullable="false" />
+          <Property Type="Int32" Name="PageNumber" Nullable="false" />
+          <Property Type="Int32" Name="PublishedYear" />
+          <Property Type="DateTime" Name="DateAdded" Nullable="false" Precision="0" />
+          <Property Type="Int32" Name="Score" Nullable="false" />
+          <Property Type="Int32" Name="CategoryID" Nullable="false" />
+          <Property Type="Int32" Name="EditorID" Nullable="false" />
+          <Property Type="Int32" Name="TimesConsulted" Nullable="false" />
+          <Property Type="Boolean" Name="IsTranslated" />
+          <Property Type="Int32" Name="BookStatus" Nullable="false" />
+          <Property Type="Int32" Name="UserID" />
+          <NavigationProperty Name="Category" Relationship="AsTuLusModel.FKBookCategory" FromRole="Book" ToRole="Category" />
+          <NavigationProperty Name="Editor" Relationship="AsTuLusModel.FKBookEditor" FromRole="Book" ToRole="Editor" />
+          <NavigationProperty Name="BookByUsers" Relationship="AsTuLusModel.FKBookToUser" FromRole="Book" ToRole="BookByUser" />
+          <NavigationProperty Name="Reviews" Relationship="AsTuLusModel.FKReviewBook" FromRole="Book" ToRole="Review" />
+        </EntityType>
+        <EntityType Name="BookByUser">
+          <Key>
+            <PropertyRef Name="BookByUserID" />
+            <PropertyRef Name="BookID" />
+            <PropertyRef Name="UserAccountID" />
+            <PropertyRef Name="DateCreated" />
+          </Key>
+          <Property Type="Int32" Name="BookByUserID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Int32" Name="BookID" Nullable="false" />
+          <Property Type="Int32" Name="UserAccountID" Nullable="false" />
+          <Property Type="Int32" Name="LikeState" />
+          <Property Type="DateTime" Name="DateCreated" Nullable="false" Precision="0" />
+          <Property Type="DateTime" Name="DateModified" Precision="0" />
+          <NavigationProperty Name="Book" Relationship="AsTuLusModel.FKBookToUser" FromRole="BookByUser" ToRole="Book" />
+          <NavigationProperty Name="UserAccount" Relationship="AsTuLusModel.FKUserToBook" FromRole="BookByUser" ToRole="UserAccount" />
+        </EntityType>
+        <EntityType Name="Category">
+          <Key>
+            <PropertyRef Name="CategoryID" />
+          </Key>
+          <Property Type="Int32" Name="CategoryID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="CategoryName" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="Int32" Name="TimesCategoryConsulted" Nullable="false" />
+          <Property Type="DateTime" Name="DateAdded" Nullable="false" Precision="0" />
+          <NavigationProperty Name="Books" Relationship="AsTuLusModel.FKBookCategory" FromRole="Category" ToRole="Book" />
+          <NavigationProperty Name="SubCategories" Relationship="AsTuLusModel.FKSubCategoryCategory" FromRole="Category" ToRole="SubCategory" />
+        </EntityType>
+        <EntityType Name="Comment">
+          <Key>
+            <PropertyRef Name="CommentID" />
+          </Key>
+          <Property Type="Int32" Name="CommentID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="CommentText" Nullable="false" MaxLength="140" FixedLength="false" Unicode="false" />
+          <Property Type="Int32" Name="AccountID" Nullable="false" />
+          <Property Type="Int32" Name="ReviewID" Nullable="false" />
+          <Property Type="DateTime" Name="DateAdded" Nullable="false" Precision="0" />
+          <NavigationProperty Name="Review" Relationship="AsTuLusModel.FKCommentReview" FromRole="Comment" ToRole="Review" />
+          <NavigationProperty Name="UserAccount" Relationship="AsTuLusModel.FKCommentUser" FromRole="Comment" ToRole="UserAccount" />
+        </EntityType>
+        <EntityType Name="Editor">
+          <Key>
+            <PropertyRef Name="EditorID" />
+          </Key>
+          <Property Type="Int32" Name="EditorID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="EditorName" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="DateCreated" Precision="3" />
+          <Property Type="Int32" Name="EditorScore" Nullable="false" />
+          <Property Type="DateTime" Name="DateAdded" Nullable="false" Precision="0" />
+          <Property Type="Int32" Name="TimeEditorConsulted" Nullable="false" />
+          <NavigationProperty Name="Books" Relationship="AsTuLusModel.FKBookEditor" FromRole="Editor" ToRole="Book" />
+        </EntityType>
+        <EntityType Name="Review">
+          <Key>
+            <PropertyRef Name="ReviewID" />
+          </Key>
+          <Property Type="Int32" Name="ReviewID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="ReviewText" Nullable="false" MaxLength="300" FixedLength="false" Unicode="false" />
+          <Property Type="Int32" Name="AccountID" Nullable="false" />
+          <Property Type="Int32" Name="BookID" Nullable="false" />
+          <Property Type="Int32" Name="ReviewScore" Nullable="false" />
+          <Property Type="DateTime" Name="DateAdded" Nullable="false" Precision="0" />
+          <NavigationProperty Name="Book" Relationship="AsTuLusModel.FKReviewBook" FromRole="Review" ToRole="Book" />
+          <NavigationProperty Name="Comments" Relationship="AsTuLusModel.FKCommentReview" FromRole="Review" ToRole="Comment" />
+          <NavigationProperty Name="UserAccount" Relationship="AsTuLusModel.FKReviewUser" FromRole="Review" ToRole="UserAccount" />
+        </EntityType>
+        <EntityType Name="SubCategory">
+          <Key>
+            <PropertyRef Name="SubCategoryID" />
+          </Key>
+          <Property Type="Int32" Name="SubCategoryID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="SubCategoryName" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="Int32" Name="CategoryID" Nullable="false" />
+          <Property Type="Int32" Name="TimesSubCatConsulted" Nullable="false" />
+          <Property Type="DateTime" Name="DateAdded" Nullable="false" Precision="0" />
+          <NavigationProperty Name="Category" Relationship="AsTuLusModel.FKSubCategoryCategory" FromRole="SubCategory" ToRole="Category" />
+        </EntityType>
+        <EntityType Name="UserAccount">
+          <Key>
+            <PropertyRef Name="AccountID" />
+          </Key>
+          <Property Type="Int32" Name="AccountID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="AccountName" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="DateCreated" Nullable="false" Precision="3" />
+          <Property Type="DateTime" Name="DateLastLog" Precision="3" />
+          <Property Type="Int32" Name="AccountScore" Nullable="false" />
+          <Property Type="String" Name="Reputation" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="BookByUsers" Relationship="AsTuLusModel.FKUserToBook" FromRole="UserAccount" ToRole="BookByUser" />
+          <NavigationProperty Name="Comments" Relationship="AsTuLusModel.FKCommentUser" FromRole="UserAccount" ToRole="Comment" />
+          <NavigationProperty Name="Reviews" Relationship="AsTuLusModel.FKReviewUser" FromRole="UserAccount" ToRole="Review" />
+        </EntityType>
+        <EntityType Name="UserProfile">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Type="Int32" Name="UserId" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="UserName" Nullable="false" MaxLength="56" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="webpages_Roles" Relationship="AsTuLusModel.webpages_UsersInRoles" FromRole="UserProfile" ToRole="webpages_Roles" />
+        </EntityType>
+        <EntityType Name="webpages_Membership">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Type="Int32" Name="UserId" Nullable="false" />
+          <Property Type="DateTime" Name="CreateDate" Precision="3" />
+          <Property Type="String" Name="ConfirmationToken" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Type="Boolean" Name="IsConfirmed" />
+          <Property Type="DateTime" Name="LastPasswordFailureDate" Precision="3" />
+          <Property Type="Int32" Name="PasswordFailuresSinceLastSuccess" Nullable="false" />
+          <Property Type="String" Name="Password" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Type="DateTime" Name="PasswordChangedDate" Precision="3" />
+          <Property Type="String" Name="PasswordSalt" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="PasswordVerificationToken" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Type="DateTime" Name="PasswordVerificationTokenExpirationDate" Precision="3" />
+        </EntityType>
+        <EntityType Name="webpages_OAuthMembership">
+          <Key>
+            <PropertyRef Name="Provider" />
+            <PropertyRef Name="ProviderUserId" />
+          </Key>
+          <Property Type="String" Name="Provider" Nullable="false" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="ProviderUserId" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Type="Int32" Name="UserId" Nullable="false" />
+        </EntityType>
+        <EntityType Name="webpages_Roles">
+          <Key>
+            <PropertyRef Name="RoleId" />
+          </Key>
+          <Property Type="Int32" Name="RoleId" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="RoleName" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="UserProfiles" Relationship="AsTuLusModel.webpages_UsersInRoles" FromRole="webpages_Roles" ToRole="UserProfile" />
+        </EntityType>
+        <Association Name="FKBookCategory">
+          <End Type="AsTuLusModel.Category" Role="Category" Multiplicity="1" />
+          <End Type="AsTuLusModel.Book" Role="Book" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Category">
+              <PropertyRef Name="CategoryID" />
+            </Principal>
+            <Dependent Role="Book">
+              <PropertyRef Name="CategoryID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FKBookEditor">
+          <End Type="AsTuLusModel.Editor" Role="Editor" Multiplicity="1" />
+          <End Type="AsTuLusModel.Book" Role="Book" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Editor">
+              <PropertyRef Name="EditorID" />
+            </Principal>
+            <Dependent Role="Book">
+              <PropertyRef Name="EditorID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FKBookToUser">
+          <End Type="AsTuLusModel.Book" Role="Book" Multiplicity="1" />
+          <End Type="AsTuLusModel.BookByUser" Role="BookByUser" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Book">
+              <PropertyRef Name="BookID" />
+            </Principal>
+            <Dependent Role="BookByUser">
+              <PropertyRef Name="BookID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FKReviewBook">
+          <End Type="AsTuLusModel.Book" Role="Book" Multiplicity="1" />
+          <End Type="AsTuLusModel.Review" Role="Review" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Book">
+              <PropertyRef Name="BookID" />
+            </Principal>
+            <Dependent Role="Review">
+              <PropertyRef Name="BookID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FKUserToBook">
+          <End Type="AsTuLusModel.UserAccount" Role="UserAccount" Multiplicity="1" />
+          <End Type="AsTuLusModel.BookByUser" Role="BookByUser" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserAccount">
+              <PropertyRef Name="AccountID" />
+            </Principal>
+            <Dependent Role="BookByUser">
+              <PropertyRef Name="UserAccountID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FKSubCategoryCategory">
+          <End Type="AsTuLusModel.Category" Role="Category" Multiplicity="1" />
+          <End Type="AsTuLusModel.SubCategory" Role="SubCategory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Category">
+              <PropertyRef Name="CategoryID" />
+            </Principal>
+            <Dependent Role="SubCategory">
+              <PropertyRef Name="CategoryID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FKCommentReview">
+          <End Type="AsTuLusModel.Review" Role="Review" Multiplicity="1" />
+          <End Type="AsTuLusModel.Comment" Role="Comment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Review">
+              <PropertyRef Name="ReviewID" />
+            </Principal>
+            <Dependent Role="Comment">
+              <PropertyRef Name="ReviewID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FKCommentUser">
+          <End Type="AsTuLusModel.UserAccount" Role="UserAccount" Multiplicity="1" />
+          <End Type="AsTuLusModel.Comment" Role="Comment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserAccount">
+              <PropertyRef Name="AccountID" />
+            </Principal>
+            <Dependent Role="Comment">
+              <PropertyRef Name="AccountID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FKReviewUser">
+          <End Type="AsTuLusModel.UserAccount" Role="UserAccount" Multiplicity="1" />
+          <End Type="AsTuLusModel.Review" Role="Review" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserAccount">
+              <PropertyRef Name="AccountID" />
+            </Principal>
+            <Dependent Role="Review">
+              <PropertyRef Name="AccountID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="webpages_UsersInRoles">
+          <End Type="AsTuLusModel.webpages_Roles" Role="webpages_Roles" Multiplicity="*" />
+          <End Type="AsTuLusModel.UserProfile" Role="UserProfile" Multiplicity="*" />
+        </Association>
+        </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="AsTuLusModelStoreContainer" CdmEntityContainer="AsTuLusEntities">
+          <EntitySetMapping Name="Books">
+            <EntityTypeMapping TypeName="AsTuLusModel.Book">
+              <MappingFragment StoreEntitySet="Book">
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="BookStatus" ColumnName="BookStatus" />
+                <ScalarProperty Name="IsTranslated" ColumnName="IsTranslated" />
+                <ScalarProperty Name="TimesConsulted" ColumnName="TimesConsulted" />
+                <ScalarProperty Name="EditorID" ColumnName="EditorID" />
+                <ScalarProperty Name="CategoryID" ColumnName="CategoryID" />
+                <ScalarProperty Name="Score" ColumnName="Score" />
+                <ScalarProperty Name="DateAdded" ColumnName="DateAdded" />
+                <ScalarProperty Name="PublishedYear" ColumnName="PublishedYear" />
+                <ScalarProperty Name="PageNumber" ColumnName="PageNumber" />
+                <ScalarProperty Name="BookLanguage" ColumnName="BookLanguage" />
+                <ScalarProperty Name="BookSerie" ColumnName="BookSerie" />
+                <ScalarProperty Name="BookCollection" ColumnName="BookCollection" />
+                <ScalarProperty Name="BookNumber" ColumnName="BookNumber" />
+                <ScalarProperty Name="BookISBN" ColumnName="BookISBN" />
+                <ScalarProperty Name="ThirdAuthor" ColumnName="ThirdAuthor" />
+                <ScalarProperty Name="SecondAuthor" ColumnName="SecondAuthor" />
+                <ScalarProperty Name="PrimaryAuthor" ColumnName="PrimaryAuthor" />
+                <ScalarProperty Name="BookName" ColumnName="BookName" />
+                <ScalarProperty Name="BookID" ColumnName="BookID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="BookByUsers">
+            <EntityTypeMapping TypeName="AsTuLusModel.BookByUser">
+              <MappingFragment StoreEntitySet="BookByUser">
+                <ScalarProperty Name="DateModified" ColumnName="DateModified" />
+                <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+                <ScalarProperty Name="LikeState" ColumnName="LikeState" />
+                <ScalarProperty Name="UserAccountID" ColumnName="UserAccountID" />
+                <ScalarProperty Name="BookID" ColumnName="BookID" />
+                <ScalarProperty Name="BookByUserID" ColumnName="BookByUserID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Categories">
+            <EntityTypeMapping TypeName="AsTuLusModel.Category">
+              <MappingFragment StoreEntitySet="Category">
+                <ScalarProperty Name="DateAdded" ColumnName="DateAdded" />
+                <ScalarProperty Name="TimesCategoryConsulted" ColumnName="TimesCategoryConsulted" />
+                <ScalarProperty Name="CategoryName" ColumnName="CategoryName" />
+                <ScalarProperty Name="CategoryID" ColumnName="CategoryID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Comments">
+            <EntityTypeMapping TypeName="AsTuLusModel.Comment">
+              <MappingFragment StoreEntitySet="Comment">
+                <ScalarProperty Name="DateAdded" ColumnName="DateAdded" />
+                <ScalarProperty Name="ReviewID" ColumnName="ReviewID" />
+                <ScalarProperty Name="AccountID" ColumnName="AccountID" />
+                <ScalarProperty Name="CommentText" ColumnName="CommentText" />
+                <ScalarProperty Name="CommentID" ColumnName="CommentID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Editors">
+            <EntityTypeMapping TypeName="AsTuLusModel.Editor">
+              <MappingFragment StoreEntitySet="Editor">
+                <ScalarProperty Name="TimeEditorConsulted" ColumnName="TimeEditorConsulted" />
+                <ScalarProperty Name="DateAdded" ColumnName="DateAdded" />
+                <ScalarProperty Name="EditorScore" ColumnName="EditorScore" />
+                <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+                <ScalarProperty Name="EditorName" ColumnName="EditorName" />
+                <ScalarProperty Name="EditorID" ColumnName="EditorID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Reviews">
+            <EntityTypeMapping TypeName="AsTuLusModel.Review">
+              <MappingFragment StoreEntitySet="Review">
+                <ScalarProperty Name="DateAdded" ColumnName="DateAdded" />
+                <ScalarProperty Name="ReviewScore" ColumnName="ReviewScore" />
+                <ScalarProperty Name="BookID" ColumnName="BookID" />
+                <ScalarProperty Name="AccountID" ColumnName="AccountID" />
+                <ScalarProperty Name="ReviewText" ColumnName="ReviewText" />
+                <ScalarProperty Name="ReviewID" ColumnName="ReviewID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SubCategories">
+            <EntityTypeMapping TypeName="AsTuLusModel.SubCategory">
+              <MappingFragment StoreEntitySet="SubCategory">
+                <ScalarProperty Name="DateAdded" ColumnName="DateAdded" />
+                <ScalarProperty Name="TimesSubCatConsulted" ColumnName="TimesSubCatConsulted" />
+                <ScalarProperty Name="CategoryID" ColumnName="CategoryID" />
+                <ScalarProperty Name="SubCategoryName" ColumnName="SubCategoryName" />
+                <ScalarProperty Name="SubCategoryID" ColumnName="SubCategoryID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserAccounts">
+            <EntityTypeMapping TypeName="AsTuLusModel.UserAccount">
+              <MappingFragment StoreEntitySet="UserAccount">
+                <ScalarProperty Name="Reputation" ColumnName="Reputation" />
+                <ScalarProperty Name="AccountScore" ColumnName="AccountScore" />
+                <ScalarProperty Name="DateLastLog" ColumnName="DateLastLog" />
+                <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+                <ScalarProperty Name="AccountName" ColumnName="AccountName" />
+                <ScalarProperty Name="AccountID" ColumnName="AccountID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserProfiles">
+            <EntityTypeMapping TypeName="AsTuLusModel.UserProfile">
+              <MappingFragment StoreEntitySet="UserProfile">
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="webpages_Membership">
+            <EntityTypeMapping TypeName="AsTuLusModel.webpages_Membership">
+              <MappingFragment StoreEntitySet="webpages_Membership">
+                <ScalarProperty Name="PasswordVerificationTokenExpirationDate" ColumnName="PasswordVerificationTokenExpirationDate" />
+                <ScalarProperty Name="PasswordVerificationToken" ColumnName="PasswordVerificationToken" />
+                <ScalarProperty Name="PasswordSalt" ColumnName="PasswordSalt" />
+                <ScalarProperty Name="PasswordChangedDate" ColumnName="PasswordChangedDate" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="PasswordFailuresSinceLastSuccess" ColumnName="PasswordFailuresSinceLastSuccess" />
+                <ScalarProperty Name="LastPasswordFailureDate" ColumnName="LastPasswordFailureDate" />
+                <ScalarProperty Name="IsConfirmed" ColumnName="IsConfirmed" />
+                <ScalarProperty Name="ConfirmationToken" ColumnName="ConfirmationToken" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="webpages_OAuthMembership">
+            <EntityTypeMapping TypeName="AsTuLusModel.webpages_OAuthMembership">
+              <MappingFragment StoreEntitySet="webpages_OAuthMembership">
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="ProviderUserId" ColumnName="ProviderUserId" />
+                <ScalarProperty Name="Provider" ColumnName="Provider" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="webpages_Roles">
+            <EntityTypeMapping TypeName="AsTuLusModel.webpages_Roles">
+              <MappingFragment StoreEntitySet="webpages_Roles">
+                <ScalarProperty Name="RoleName" ColumnName="RoleName" />
+                <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="webpages_UsersInRoles" TypeName="AsTuLusModel.webpages_UsersInRoles" StoreEntitySet="webpages_UsersInRoles">
+            <EndProperty Name="UserProfile">
+              <ScalarProperty Name="UserId" ColumnName="UserId" />
+            </EndProperty>
+            <EndProperty Name="webpages_Roles">
+              <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+            </EndProperty>
+          </AssociationSetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

@@ -1,0 +1,9 @@
+﻿namespace AsTuLuWebProject.Utilities
+{
+    public class UserActionResult
+    {
+        public string Message { get; set; }
+
+        public int Status { get; set; }
+    }
+}
