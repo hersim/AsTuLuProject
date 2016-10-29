@@ -1,12 +1,11 @@
 ﻿using System.Collections.Generic;
-using AsTuLuWebProject.Database;
 using AsTuLuWebProject.Models;
 
 namespace AsTuLuWebProject.Utilities.Containers
 {
     public class BookContainer
     {
-        public Book BookToShow { get; set; }
+        public BookModel BookToShow { get; set; }
 
         public BookStatus BookRelationship { get; set; }
 

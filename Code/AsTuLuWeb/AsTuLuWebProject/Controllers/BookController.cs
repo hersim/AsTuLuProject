@@ -1,5 +1,6 @@
 ﻿using System.Web.Mvc;
 using AsTuLuWebProject.Database;
+using AsTuLuWebProject.Models;
 using AsTuLuWebProject.Models.Interfaces;
 using AsTuLuWebProject.Models.Interfaces.DAL;
 using AsTuLuWebProject.Utilities;
@@ -35,7 +36,7 @@ namespace AsTuLuWebProject.Controllers
         {
             BookContainer bookToShow = new BookContainer();
 
-            Book book = BookRepository.GetBookById((int)bookID);
+            BookModel book = BookRepository.GetBookById((int)bookID);
 
             if (book == null)
             {

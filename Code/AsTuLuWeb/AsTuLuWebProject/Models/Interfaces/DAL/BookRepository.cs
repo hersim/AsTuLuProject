@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Entity;
+using System.Data;
 using System.Linq;
 using AsTuLuWebProject.Database;
 using AsTuLuWebProject.Models.ViewModels;
 using AsTuLuWebProject.Utilities;
 using AsTuLuWebProject.Utilities.Enums;
+using EntityState = System.Data.Entity.EntityState;
 
 namespace AsTuLuWebProject.Models.Interfaces.DAL
 {
@@ -13,32 +14,13 @@ namespace AsTuLuWebProject.Models.Interfaces.DAL
     {
         #region Properties
 
-        private static readonly IEditorRepository EditorRepository = new EditorRepository();
+        private static readonly IEditorRepository editorRepository = new EditorRepository();
 
-        private static readonly ICategoryRepository CategoryRepository = new CategoryRepository();
+        private static readonly ICategoryRepository categoryRepository = new CategoryRepository();
 
-        private static readonly IUserRepository UserRepository = new UserRepository();
+        private static readonly IUserRepository userRepository = new UserRepository();
 
         #endregion
-
-        #region Public Methods
-        
-        public List<Book> ListBooks()
-        {
-            using (AsTuLusEntities context = new AsTuLusEntities())
-            {
-                return context.Book.ToList();    
-            }
-            
-        }
-
-        public List<Book> ListHighestRatingBooks()
-        {
-            using (AsTuLusEntities context = new AsTuLusEntities())
-            {
-                return context.Book.OrderBy(x => x.Score).ToList();
-            }
-        }
 
         public List<BookDisplay> GetListOfBooks(int pageNumber, string firstOption, string secondOption, string thirdOption, int? userId)
         {
@@ -56,13 +38,13 @@ namespace AsTuLuWebProject.Models.Interfaces.DAL
                             listBook = ListBooksByCategory(context, pageCount, firstOption, secondOption, thirdOption);
                             break;
                         case "Editor":
-                            listBook = ListBooksByCategory(context, pageCount, firstOption, secondOption, thirdOption);
+                            listBook = ListBooksByEditor(context, pageCount, firstOption, secondOption, thirdOption);
                             break;
                         case "Author":
                             listBook = ListBooksByAuthor(context, pageCount, firstOption, secondOption, thirdOption);
                             break;
                     }
-                    
+
                 }
                 else
                 {
@@ -86,7 +68,7 @@ namespace AsTuLuWebProject.Models.Interfaces.DAL
 
                 if (userId != null)
                 {
-                    UserAccount account = UserRepository.GetUser((int)userId);
+                    UserAccount account = userRepository.GetUser((int)userId);
 
                     foreach (Book booking in listBook)
                     {
@@ -130,8 +112,7 @@ namespace AsTuLuWebProject.Models.Interfaces.DAL
             
         }
 
-        private static List<Book> ListBooksByAuthor(AsTuLusEntities context, int pageCount, string firstOption,
-                                                    string secondOption, string thirdOption)
+        private List<Book> ListBooksByAuthor(AsTuLusEntities context, int pageCount, string firstOption, string secondOption, string thirdOption)
         {
             List<Book> listBook = new List<Book>();
 
@@ -217,62 +198,57 @@ namespace AsTuLuWebProject.Models.Interfaces.DAL
             return listBook;
         }
 
-        private static List<Book> ListBooksByEditions(AsTuLusEntities context, int pageCount, string firstOption,
-                                                      string secondOption, string thirdOption)
+        private static List<Book> ListBooksByEditor(AsTuLusEntities context, int pageCount, string firstOption, string secondOption, string thirdOption)
         {
-            List<Book> fetch;
-
-            List<Book> listBook = new List<Book>();
+            List<Book> listBooks = new List<Book>();
 
             IQueryable<Editor> editors = from e in context.Editor.OrderBy(x => x.EditorName)
                                          select e;
 
-            List<Editor> listEditors = new List<Editor>
-                                {
-                                    editors.First()
-                                };
+            List<Editor> colctEditors = new List<Editor>()
+                {
+                    editors.First()
+                };
+
 
             int count = 0;
 
-            Editor editorModel = listEditors.Last();
+            Editor model = colctEditors.Last();
 
-            while (listBook.Count < 60)
+            while (listBooks.Count() < 60)
             {
-                IQueryable<Book> bookByEditor =
-                    from e in context.Book.Where(
-                        item => item.BookByEditor.Any(x => x.EditorID == editorModel.EditorID))
-                    select e;
+                Editor baseModel = model;
 
-                switch (secondOption)
+                IQueryable<BookByEditor> booksByEditor = from bbe in context.BookByEditor
+                                                         where bbe.EditorID == baseModel.EditorID
+                                                         select bbe;
+
+                if (booksByEditor.Any())
                 {
-                    default:
-                        fetch = bookByEditor.OrderBy(x => x.BookID).Skip(pageCount * 60).Take(60).ToList();
-                        break;
-                    case "New":
-                        fetch = bookByEditor.OrderByDescending(x => x.DateAdded).Skip(pageCount * 60).Take(60).ToList();
-                        break;
-                    case "Old":
-                        fetch = bookByEditor.OrderBy(x => x.DateAdded).Skip(pageCount * 60).Take(60).ToList();
-                        break;
-                }
+                    if (booksByEditor.Count() < (listBooks.Count + booksByEditor.Count()))
+                    {
+                        listBooks.AddRange(booksByEditor.OrderBy(x => x.Book.BookName).Select(y => y.Book).ToList());    
+                    }
+                    else
+                    {
+                        int diff = 60 - listBooks.Count;
 
-                listBook.AddRange(fetch);
+                        listBooks.AddRange(booksByEditor.OrderBy(x => x.Book.BookName).Select(y => y.Book).Take(diff));
+                    }
+                }
 
                 count++;
 
-                listEditors.AddRange(editors.Skip(count).Take(1));
+                colctEditors.AddRange(editors.Skip(count).Take(1));
 
-                editorModel = listEditors.Last();
+                model = colctEditors.Last();
             }
-
-
-            return listBook;
+            
+            return listBooks;
         }
 
         private static List<Book> ListBooksByCategory(AsTuLusEntities context, int pageCount, string firstOption, string secondOption, string thirdOption)
         {
-            List<Book> fetch;
-
             List<Book> listBook = new List<Book>();
             IQueryable<Category> categories = from c in context.Category.OrderBy(x => x.CategoryName)
                                               select c;
@@ -294,6 +270,8 @@ namespace AsTuLuWebProject.Models.Interfaces.DAL
                     from b in context.Book.Where(item => item.CategoryID == model1.CategoryID)
                     select b;
 
+                List<Book> fetch;
+              
                 switch (secondOption)
                 {
                     default:
@@ -387,7 +365,7 @@ namespace AsTuLuWebProject.Models.Interfaces.DAL
                     {
                         if (currentListBooks.All(item => item.BookID != randomNumber))
                         {
-                            listBooks.Add(bookToAdd);    
+                            listBooks.Add(bookToAdd);
                         }
                     }
 
@@ -423,15 +401,19 @@ namespace AsTuLuWebProject.Models.Interfaces.DAL
                 }
 
                 return listToReturn;
-            }
-
+            } 
         }
 
-        public Book GetBookById(int bookId)
+        public BookModel GetBookById(int bookId)
         {
             using (AsTuLusEntities context = new AsTuLusEntities())
             {
                 Book bookToReturn = context.Book.Include("Review").Include("Review.Comment").FirstOrDefault(item => item.BookID == bookId);
+
+                if (bookToReturn == null)
+                {
+                    throw new ObjectNotFoundException("Pas de livre pour ce numéro.");
+                }
 
                 bookToReturn.TimesConsulted++;
 
@@ -439,12 +421,11 @@ namespace AsTuLuWebProject.Models.Interfaces.DAL
 
                 context.SaveChanges();
 
-                return bookToReturn;
+                return new BookModel(bookToReturn);
             }
-            
         }
 
-        public BookStatus GetRelationshipForBook(UserAccount userToShow, Book bookToShow)
+        public BookStatus GetRelationshipForBook(UserAccount userToShow, BookModel bookToShow)
         {
             BookStatus returnValue = new BookStatus();
 
@@ -497,90 +478,19 @@ namespace AsTuLuWebProject.Models.Interfaces.DAL
             }
         }
 
-        public BookDisplay GetRelationshipForBookDisplay(UserAccount userToShow, Book bookToShow)
+        public bool CheckIfBookPresent(int bookID)
         {
             using (AsTuLusEntities context = new AsTuLusEntities())
             {
-                IQueryable<BookByUser> bookRelationShip = from br in context.BookByUser
-                                                          where br.BookID == bookToShow.BookID
-                                                          where br.UserID == userToShow.AccountID
-                                                          select br;
-
-                BookByUser bookRel;
-
-                if (!bookRelationShip.Any())
-                {
-                    bookRel = new BookByUser
-                    {
-                        BookID = bookToShow.BookID,
-                        UserID = userToShow.AccountID,
-                        DateCreated = DateTime.Now,
-                        DateModified = DateTime.Now,
-                    };
-
-                    context.BookByUser.Add(bookRel);
-                }
-                else
-                {
-                    bookRel = bookRelationShip.First();
-                }
-
-                BookDisplay displayToReturn = new BookDisplay(bookRel);
-
-                return displayToReturn;
+                return context.Book.Any(bk => bk.BookID == bookID);
             }
-        }
-
-        public bool CheckIfBookPresent(BookModel bookToCheck)
-        {
-            using (AsTuLusEntities context = new AsTuLusEntities())
-            {
-                IQueryable<Book> book = from bo in context.Book
-                                        where bo.BookName == bookToCheck.BookName
-                                        select bo;
-
-                if (!book.Any())
-                {
-                    return false;
-                }
-
-                if (bookToCheck.Year == null || bookToCheck.PageNumber == null)
-                {
-                    //return Enumerable.Any(Book, book => book.Editor.EditorName == bookToCheck.EditorName &&
-                    //                                    book.PrimaryAuthor == bookToCheck.Author1 &&
-                    //                                    book.SecondAuthor == bookToCheck.Author2 &&
-                    //                                    book.ThirdAuthor == bookToCheck.Author3);
-                }
-
-                //return Enumerable.Any(Book.Where(book => book.Editor.EditorName == bookToCheck.EditorName)
-                //                          .Where(book => book.PublishedYear != null && book.PageNumber != null),
-                //                                        book => book.PublishedYear == int.Parse(bookToCheck.Year) &&
-                //                                        book.PageNumber == int.Parse(bookToCheck.PageNumber));
-                return true;
-            }
-            
-        }
-
-        public bool CheckIfBookPresent(Book bookToCheck)
-        {
-            using (AsTuLusEntities context = new AsTuLusEntities())
-            {
-                IQueryable<Book> bookQuery = from book in context.Book
-                                             where book.BookName == bookToCheck.BookName
-                                             where book.PublishedYear == bookToCheck.PublishedYear
-                                             where book.PageNumber == bookToCheck.PageNumber
-                                             select book;
-
-                return bookQuery.Any(); 
-            }
-            
         }
 
         public UserActionResult UpdateBookStatus(int bookID, string buttonId, string userName)
         {
             UserActionResult result = new UserActionResult();
 
-            UserAccount user = UserRepository.GetUserByName(userName);
+            UserAccount user = userRepository.GetUserByName(userName);
 
             using (AsTuLusEntities dbcontext = new AsTuLusEntities())
             {
@@ -625,7 +535,7 @@ namespace AsTuLuWebProject.Models.Interfaces.DAL
 
                 switch (bookRelationship.LikeState)
                 {
-                        // Si le statut du livre est "Liked"
+                    // Si le statut du livre est "Liked"
                     case (int)EnumLibrary.BookRelationshipEnum.Liked:
                         // Si la valeur saisie est "Liked"
                         if (value == EnumLibrary.BookRelationshipEnum.Liked)
@@ -641,7 +551,7 @@ namespace AsTuLuWebProject.Models.Interfaces.DAL
                             bookRelationship.LikeState = (int)EnumLibrary.BookRelationshipEnum.Unliked;
                             result.StatusValue = (int)EnumLibrary.ActionStatus.Unliked;
                         }
-                            
+
                         break;
                     case null:
                         if (value == EnumLibrary.BookRelationshipEnum.Liked)
@@ -685,23 +595,5 @@ namespace AsTuLuWebProject.Models.Interfaces.DAL
 
             return result;
         }
-
-        #endregion
-
-        #region Private Methods
-
-        private BookModel BookToBookModel(Book bookToConvert)
-        {
-            BookModel bookToReturn = new BookModel
-                {
-                    BookName = bookToConvert.BookName,
-                    CollectionTag = bookToConvert.BookCollection,
-
-                };
-
-            return bookToReturn;
-        }
-
-        #endregion
     }
 }

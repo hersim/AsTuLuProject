@@ -9,15 +9,15 @@
     @Html.HiddenFor(item => item.BookToShow.BookID, new {@id = "bookID"} )
     <div>
         <h2 class="float-left">
-            @if (!String.IsNullOrEmpty(Model.BookToShow.BookSerie))
+            @if (!String.IsNullOrEmpty(Model.BookToShow.SerieTag))
             {
-                <span>@Model.BookToShow.BookSerie - </span>
+                <span>@Model.BookToShow.SerieTag - </span>
             }    @Html.DisplayFor(item => item.BookToShow.BookName)
         </h2>
-        @if (Model.BookToShow.BookNumber != null)
+        @if (Model.BookToShow.Number != null)
         {
             <div class="float-right">
-                # : @Html.DisplayFor(item => item.BookToShow.BookNumber)
+                # : @Html.DisplayFor(item => item.BookToShow.Number)
             </div>
         }    
     </div>
@@ -56,34 +56,23 @@
         <div class="clear"></div>
     </div>
     
-    @if (!String.IsNullOrEmpty(Model.BookToShow.BookCollection))
+    @if (!String.IsNullOrEmpty(Model.BookToShow.CollectionTag))
     {
         <div class="blackborder">
-            Collection @Html.DisplayFor(item => item.BookToShow.BookCollection)
+            Collection @Html.DisplayFor(item => item.BookToShow.CollectionTag)
         </div>
     }
     <div>
-        @switch (Model.BookToShow.BookLanguage)
+        <span>@Model.BookToShow.Language - </span>
+        @if (Model.BookToShow.Translated != null)
         {
-            case 1:
-                <span>Français - </span>
-                break;
-            case 2:
-                <span>Anglais - </span>
-                break;
+            <span>
+                @Model.BookToShow.Translated
+            </span>
         }
-        @if (Model.BookToShow.IsTranslated != null)
+        @if (!String.IsNullOrEmpty(Model.BookToShow.Year))
         {
-            if ((bool)Model.BookToShow.IsTranslated)
-            {
-                <span>
-                    Traduit
-                </span>
-            }
-        }
-        @if (Model.BookToShow.PublishedYear != null)
-        {
-            @Html.DisplayFor(item => item.BookToShow.PublishedYear)
+            @Html.DisplayFor(item => item.BookToShow.Year)
         }
     </div>
     <div>
@@ -93,7 +82,7 @@
     </div>
     <div id="bookData">
         <div class="float-left">
-            Ajouté le: @Model.BookToShow.DateAdded.ToShortDateString()
+            Ajouté le: @Model.BookToShow.Year
         </div>
         <div class="float-left">
             Score: <span id="scoreZone">@Model.BookToShow.Score</span>
@@ -182,9 +171,9 @@
         </div>    
         }
         *@
-        @if (!String.IsNullOrEmpty(Model.BookToShow.BookSerie))
+        @if (!String.IsNullOrEmpty(Model.BookToShow.SerieTag))
         {
-            @Html.ActionLink("Voir plus de " + Model.BookToShow.BookSerie, "ListBySerie", "Book", new { @_serie = Model.BookToShow.BookSerie }, null)
+            @Html.ActionLink("Voir plus de " + Model.BookToShow.SerieTag, "ListBySerie", "Book", new { @_serie = Model.BookToShow.SerieTag }, null)
         }
     </div>
     <div class="clear"></div>

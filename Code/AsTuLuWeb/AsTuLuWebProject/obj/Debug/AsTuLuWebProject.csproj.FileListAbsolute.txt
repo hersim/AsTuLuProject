@@ -110,3 +110,5 @@ C:\Users\herve_simard\documents\visual studio 2012\Projects\AsTuLuWebProject\AsT
 C:\Users\herve_simard\documents\visual studio 2012\Projects\AsTuLuWebProject\AsTuLuWebProject\bin\LinqKit.dll
 C:\Users\herve_simard\documents\visual studio 2012\Projects\AsTuLuWebProject\AsTuLuWebProject\bin\LinqKit.pdb
 C:\Users\herve_simard\documents\visual studio 2012\Projects\AsTuLuWebProject\AsTuLuWebProject\bin\LinqKit.xml
+E:\GitHub\AsTuLuProject\Code\AsTuLuWeb\AsTuLuWebProject\obj\Debug\AsTuLuWebProject.csprojResolveAssemblyReference.cache
+E:\GitHub\AsTuLuProject\Code\AsTuLuWeb\AsTuLuWebProject\obj\Debug\AsTuLuWebProject.dll
