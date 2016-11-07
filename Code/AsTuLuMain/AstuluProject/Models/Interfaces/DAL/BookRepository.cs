@@ -234,6 +234,7 @@ namespace AstuluProject.Models.Interfaces.DAL
             {
                 BookName = bookModel.Name,
                 BookCollection = bookModel.CollectionTag,
+                ISBN = bookModel.ISBN
             };
 
             int number;

@@ -12,6 +12,8 @@ namespace AstuluProject.Models
 
         public string Author3 { get; set; }
 
+        public string ISBN { get; set; }
+
         public string CollectionTag { get; set; }
 
         public string SerieTag { get; set; }

@@ -92,6 +92,7 @@ namespace AstuluProject.Controllers
                         excel.AddMapping<BookToAddModel>(_x => _x.Author1, "Auteur1");
                         excel.AddMapping<BookToAddModel>(_x => _x.Author2, "Auteur2");
                         excel.AddMapping<BookToAddModel>(_x => _x.Author3, "Auteur3");
+                        excel.AddMapping<BookToAddModel>(_x => _x.Author3, "ISBN");
                         excel.AddMapping<BookToAddModel>(_x => _x.CollectionTag, "Collection");
                         excel.AddMapping<BookToAddModel>(_x => _x.SerieTag, "Série");
                         excel.AddMapping<BookToAddModel>(_x => _x.CollectionTag, "Collection");

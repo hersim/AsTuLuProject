@@ -111,6 +111,7 @@
           <Property Name="BookName" Type="varchar" Nullable="false" MaxLength="200" />
           <Property Name="BookNumber" Type="int" />
           <Property Name="BookCollection" Type="varchar" MaxLength="100" />
+          <Property Name="ISBN" Type="varchar" MaxLength="30" />
           <Property Name="BookSerie" Type="varchar" MaxLength="100" />
           <Property Name="BookLanguage" Type="int" Nullable="false" />
           <Property Name="PageNumber" Type="int" Nullable="false" />
@@ -566,6 +567,7 @@
           <NavigationProperty Name="BookByUser" Relationship="AsTuLusModel.FKBookToUser" FromRole="Book" ToRole="BookByUser" />
           <NavigationProperty Name="Category" Relationship="AsTuLusModel.FKCategoryBook" FromRole="Book" ToRole="Category" />
           <NavigationProperty Name="Review" Relationship="AsTuLusModel.FKReviewBook" FromRole="Book" ToRole="Review" />
+          <Property Type="String" Name="ISBN" MaxLength="30" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="BookByEditor">
           <Key>
@@ -908,6 +910,7 @@
           <EntitySetMapping Name="Book">
             <EntityTypeMapping TypeName="AsTuLusModel.Book">
               <MappingFragment StoreEntitySet="Book">
+                <ScalarProperty Name="ISBN" ColumnName="ISBN" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
                 <ScalarProperty Name="CategoryID" ColumnName="CategoryID" />
                 <ScalarProperty Name="BookStatus" ColumnName="BookStatus" />

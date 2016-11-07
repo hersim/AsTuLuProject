@@ -53,6 +53,7 @@ CREATE TABLE Book
 	BookName VARCHAR(200) NOT NULL ,
 	BookNumber INT,
 	BookCollection VARCHAR(100),
+	ISBN VARCHAR(30),
 	BookSerie VARCHAR(100),
 	BookLanguage INT NOT NULL ,
 	PageNumber INT NOT NULL ,

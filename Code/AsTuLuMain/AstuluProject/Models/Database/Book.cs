@@ -37,6 +37,7 @@ namespace AstuluProject.Models.Database
         public int BookStatus { get; set; }
         public int CategoryID { get; set; }
         public Nullable<int> UserID { get; set; }
+        public string ISBN { get; set; }
     
         public virtual ICollection<AuthorByBook> AuthorByBook { get; set; }
         public virtual ICollection<BookByEditor> BookByEditor { get; set; }
